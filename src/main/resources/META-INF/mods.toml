@@ -1,0 +1,20 @@
+modLoader="javafml"
+loaderVersion="[38,)"
+issueTrackerURL="https://github.com/Mrbysco/MonsterEggs/issues"
+license="MIT"
+
+[[mods]]
+modId="monstereggs"
+version="${file.jarVersion}"
+displayName="Monster Eggs"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/monster-eggs"
+authors="Mrbysco, ShyNieke"
+description='''
+Don't mind me, just adding some monster eggs to the underground.
+'''
+[[dependencies.monstereggs]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.18,1.19)"
+ordering="NONE"
+side="BOTH"

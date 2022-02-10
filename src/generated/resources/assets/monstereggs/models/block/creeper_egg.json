@@ -1,0 +1,9 @@
+{
+  "parent": "monstereggs:block/monster_egg",
+  "textures": {
+    "particle": "monstereggs:block/creeper_egg",
+    "side": "monstereggs:block/creeper_egg",
+    "top": "monstereggs:block/creeper_egg_top",
+    "bottom": "monstereggs:block/creeper_egg_bottom"
+  }
+}
