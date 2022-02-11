@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "hanging=false": {
       "model": "monstereggs:block/enderman_egg"
+    },
+    "hanging=true": {
+      "model": "monstereggs:block/enderman_egg_hanging"
     }
   }
 }

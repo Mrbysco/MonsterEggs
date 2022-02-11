@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "hanging=false": {
       "model": "monstereggs:block/skeleton_egg"
+    },
+    "hanging=true": {
+      "model": "monstereggs:block/skeleton_egg_hanging"
     }
   }
 }

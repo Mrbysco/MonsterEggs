@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "hanging=false": {
       "model": "monstereggs:block/creeper_egg"
+    },
+    "hanging=true": {
+      "model": "monstereggs:block/creeper_egg_hanging"
     }
   }
 }

@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "hanging=false": {
       "model": "monstereggs:block/cave_spider_egg"
+    },
+    "hanging=true": {
+      "model": "monstereggs:block/cave_spider_egg_hanging"
     }
   }
 }

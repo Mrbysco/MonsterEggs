@@ -2,35 +2,95 @@ package com.mrbysco.monstereggs.block;
 
 import com.mrbysco.monstereggs.registry.EggRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class MonsterEggBlock extends Block {
+public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
+	public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
 	protected static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 12, 13);
+	protected static final VoxelShape HANGING_SHAPE = Block.box(3, 4, 3, 13, 16, 13);
+
 	private final Supplier<? extends EntityType<? extends Mob>> typeSupplier;
 
 	public MonsterEggBlock(Supplier<? extends EntityType<? extends Mob>> type, Properties properties) {
 		super(properties);
 		this.typeSupplier = type;
+		this.registerDefaultState(this.stateDefinition.any().setValue(HANGING, Boolean.valueOf(false)).setValue(WATERLOGGED, Boolean.valueOf(false)));
+	}
+
+	@Nullable
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext placeContext) {
+		Level level = placeContext.getLevel();
+		BlockPos clickedPos = placeContext.getClickedPos();
+		FluidState fluidstate = level.getFluidState(clickedPos);
+
+		BlockState blockstate = this.defaultBlockState().setValue(HANGING, false)
+				.setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+		if(!level.getBlockState(clickedPos.below()).isAir()) {
+			return blockstate;
+		} else {
+			if(!level.getBlockState(clickedPos.above()).isAir()) {
+				blockstate = blockstate.setValue(HANGING, true);
+				return blockstate;
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+		BlockPos belowPos = pos.below();
+		BlockState belowState = reader.getBlockState(belowPos);
+		BlockPos abovePos = pos.above();
+		BlockState aboveState = reader.getBlockState(abovePos);
+		return belowState.isFaceSturdy(reader, belowPos, Direction.UP) || aboveState.isFaceSturdy(reader, abovePos, Direction.DOWN);
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor levelAccessor, BlockPos currentPos, BlockPos facingPos) {
+		return !state.canSurvive(levelAccessor, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, facingState, levelAccessor, currentPos, facingPos);
+	}
+
+	@Override
+	protected void createBlockStateDefinition(Builder<Block, BlockState> blockStateBuilder) {
+		blockStateBuilder.add(HANGING, WATERLOGGED);
 	}
 
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
-		return SHAPE;
+		if(state.getValue(HANGING)) {
+			return HANGING_SHAPE;
+		} else {
+			return SHAPE;
+		}
 	}
 
 	public EntityType<?> getType() {
@@ -65,9 +125,11 @@ public class MonsterEggBlock extends Block {
 		}
 	}
 
+	/**
+	 * Insert waterlogged bits
+	 */
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
-		BlockPos blockpos = pos.below();
-		return canSupportRigidBlock(reader, blockpos);
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(true) : super.getFluidState(state);
 	}
 }

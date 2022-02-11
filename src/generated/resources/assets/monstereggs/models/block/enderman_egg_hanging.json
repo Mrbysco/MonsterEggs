@@ -1,0 +1,9 @@
+{
+  "parent": "monstereggs:block/monster_egg_hanging",
+  "textures": {
+    "particle": "monstereggs:block/enderman_egg",
+    "side": "monstereggs:block/enderman_egg",
+    "top": "monstereggs:block/enderman_egg_top",
+    "bottom": "monstereggs:block/enderman_egg_bottom"
+  }
+}

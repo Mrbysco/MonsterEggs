@@ -16,6 +16,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.LootTables;
@@ -162,8 +163,12 @@ public class MonsterDatagen {
 
 		private void makeEgg(Block block) {
 			ModelFile model = models().getExistingFile(modLoc("block/" + block.getRegistryName().getPath()));
+			ModelFile model2 = models().getExistingFile(modLoc("block/" + block.getRegistryName().getPath() + "_hanging"));
 			getVariantBuilder(block)
-					.partialState().modelForState().modelFile(model).addModel();
+					.partialState().with(BlockStateProperties.HANGING, false)
+					.modelForState().modelFile(model).addModel()
+					.partialState().with(BlockStateProperties.HANGING, true)
+					.modelForState().modelFile(model2).addModel();
 		}
 	}
 
@@ -185,6 +190,11 @@ public class MonsterDatagen {
 		private void makeEgg(Block block) {
 			ResourceLocation location = block.getRegistryName();
 			withExistingParent(location.getPath(), modLoc("block/monster_egg"))
+					.texture("particle", "block/" + location.getPath())
+					.texture("side", "block/" + location.getPath())
+					.texture("top", "block/" + location.getPath() + "_top")
+					.texture("bottom", "block/" + location.getPath() + "_bottom");
+			withExistingParent(location.getPath() + "_hanging", modLoc("block/monster_egg_hanging"))
 					.texture("particle", "block/" + location.getPath())
 					.texture("side", "block/" + location.getPath())
 					.texture("top", "block/" + location.getPath() + "_top")
