@@ -81,7 +81,7 @@ public class EggPlacements {
 		}
 		BlockStateProvider provider = BlockStateProvider.simple(state);
 		EnvironmentScanPlacement environmentScanPlacement = EnvironmentScanPlacement.scanningFor(direction, BlockPredicate.hasSturdyFace(direction.getOpposite()),
-				BlockPredicate.ONLY_IN_AIR_PREDICATE, 32;
+				BlockPredicate.ONLY_IN_AIR_PREDICATE, 32);
 		return PlacementUtils.register(name, Feature.RANDOM_PATCH.configured(
 						FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK.configured(
 								new SimpleBlockConfiguration(provider)), List.of(), tries.get()))
