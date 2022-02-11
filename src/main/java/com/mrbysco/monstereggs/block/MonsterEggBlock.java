@@ -77,6 +77,13 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor levelAccessor, BlockPos currentPos, BlockPos facingPos) {
+		if(!levelAccessor.getBlockState(currentPos.below()).isAir()) {
+			state.setValue(HANGING, false);
+		} else {
+			if(!levelAccessor.getBlockState(currentPos.above()).isAir()) {
+				state.setValue(HANGING, true);
+			}
+		}
 		return !state.canSurvive(levelAccessor, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, facingState, levelAccessor, currentPos, facingPos);
 	}
 
