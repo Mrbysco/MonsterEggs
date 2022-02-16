@@ -1,10 +1,10 @@
 {
-  "block.monstereggs.cave_spider_egg": "Cave Spider Egg Sack",
-  "block.monstereggs.creeper_egg": "Creeper Egg Sack",
-  "block.monstereggs.enderman_egg": "Enderman Egg Sack",
-  "block.monstereggs.skeleton_egg": "Skeleton Egg Sack",
-  "block.monstereggs.spider_egg": "Spider Egg Sack",
-  "block.monstereggs.zombie_egg": "Zombie Egg Sack",
+  "block.monstereggs.cave_spider_egg": "Mysterious Shell",
+  "block.monstereggs.creeper_egg": "Mysterious Shell",
+  "block.monstereggs.enderman_egg": "Mysterious Shell",
+  "block.monstereggs.skeleton_egg": "Mysterious Shell",
+  "block.monstereggs.spider_egg": "Mysterious Shell",
+  "block.monstereggs.zombie_egg": "Mysterious Shell",
   "itemGroup.monstereggs": "Monster Eggs",
   "monstereggs.subtitle.monster_egg.broken": "Monster Egg Hatching"
 }

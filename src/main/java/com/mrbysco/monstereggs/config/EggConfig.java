@@ -11,6 +11,8 @@ import org.apache.commons.lang3.tuple.Pair;
 public class EggConfig {
 
 	public static class Common {
+		public final BooleanValue debugInfo;
+
 		public final BooleanValue generateCaveSpiderEggs;
 		public final BooleanValue generateCreeperEggs;
 		public final BooleanValue generateEndermanEggs;
@@ -47,6 +49,15 @@ public class EggConfig {
 		public final IntValue zombieEggsTries;
 
 		Common(ForgeConfigSpec.Builder builder) {
+			builder.comment("Debug settings")
+					.push("Debug");
+
+			debugInfo = builder
+					.comment("Show the mob in the tooltip of the shell [Default: false]")
+					.define("debugInfo", false);
+
+			builder.pop();
+
 			builder.comment("Generation settings")
 					.push("Generation");
 

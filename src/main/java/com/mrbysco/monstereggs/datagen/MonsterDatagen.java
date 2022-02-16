@@ -111,12 +111,12 @@ public class MonsterDatagen {
 
 			addSubtitle(EggRegistry.MONSTER_EGG_BROKEN, "Monster Egg Hatching");
 
-			addBlock(EggRegistry.CAVE_SPIDER_EGG, "Cave Spider Egg Sack");
-			addBlock(EggRegistry.CREEPER_EGG, "Creeper Egg Sack");
-			addBlock(EggRegistry.ENDERMAN_EGG, "Enderman Egg Sack");
-			addBlock(EggRegistry.SKELETON_EGG, "Skeleton Egg Sack");
-			addBlock(EggRegistry.SPIDER_EGG, "Spider Egg Sack");
-			addBlock(EggRegistry.ZOMBIE_EGG, "Zombie Egg Sack");
+			addBlock(EggRegistry.CAVE_SPIDER_EGG, "Mysterious Shell");
+			addBlock(EggRegistry.CREEPER_EGG, "Mysterious Shell");
+			addBlock(EggRegistry.ENDERMAN_EGG, "Mysterious Shell");
+			addBlock(EggRegistry.SKELETON_EGG, "Mysterious Shell");
+			addBlock(EggRegistry.SPIDER_EGG, "Mysterious Shell");
+			addBlock(EggRegistry.ZOMBIE_EGG, "Mysterious Shell");
 		}
 
 		public void addSubtitle(RegistryObject<SoundEvent> sound, String name) {
