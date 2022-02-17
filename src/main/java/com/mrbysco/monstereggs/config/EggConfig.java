@@ -56,7 +56,7 @@ public class EggConfig {
 					.push("General");
 
 			spawnOffset = builder
-					.comment("Dicects the offset of the mob spawned from the egg [Default: 0.5]")
+					.comment("dictates the Y offset of the mob spawned from the egg [Default: 0.5]")
 					.defineInRange("spawnOffset", 0.5, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
 			builder.pop();
