@@ -3,6 +3,7 @@ package com.mrbysco.monstereggs.config;
 import com.mrbysco.monstereggs.MonsterEggs;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -12,6 +13,8 @@ public class EggConfig {
 
 	public static class Common {
 		public final BooleanValue debugInfo;
+
+		public final DoubleValue spawnOffset;
 
 		public final BooleanValue generateCaveSpiderEggs;
 		public final BooleanValue generateCreeperEggs;
@@ -49,6 +52,15 @@ public class EggConfig {
 		public final IntValue zombieEggsTries;
 
 		Common(ForgeConfigSpec.Builder builder) {
+			builder.comment("General settings")
+					.push("General");
+
+			spawnOffset = builder
+					.comment("Dicects the offset of the mob spawned from the egg [Default: 0.5]")
+					.defineInRange("spawnOffset", 0.5, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+			builder.pop();
+
 			builder.comment("Debug settings")
 					.push("Debug");
 

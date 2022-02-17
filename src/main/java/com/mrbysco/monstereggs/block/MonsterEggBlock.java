@@ -146,7 +146,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 			EntityType<?> eggType = this.getType();
 			Entity eggEntity = eggType.create(level);
 			if(eggEntity != null) {
-				eggEntity.setPosRaw(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+				eggEntity.setPosRaw(pos.getX() + 0.5D, pos.getY() + EggConfig.COMMON.spawnOffset.get(), pos.getZ() + 0.5D);
 				level.addFreshEntity(eggEntity);
 			}
 		}
