@@ -148,7 +148,7 @@ public class EggConfig {
 			zombieEggsRarity = builder
 					.comment("The rarity at which Zombie Eggs will generate (1 every X) [Default: 1]")
 					.defineInRange("zombieEggsRarity", 1, 1, Integer.MAX_VALUE);
-			
+
 			builder.pop();
 			builder.comment("Count settings")
 					.push("Count");
@@ -176,7 +176,7 @@ public class EggConfig {
 			zombieEggsCount = builder
 					.comment("The amount of Zombie Eggs that it will try to generate at a time [Default: 4]")
 					.defineInRange("zombieEggsCount", 4, 1, Integer.MAX_VALUE);
-			
+
 			builder.pop();
 			builder.comment("Tries settings")
 					.push("Tries");
@@ -204,7 +204,7 @@ public class EggConfig {
 			zombieEggsTries = builder
 					.comment("The amount of times it will try to generate Zombie Eggs [Default: 24]")
 					.defineInRange("zombieEggsTries", 24, 1, Integer.MAX_VALUE);
-			
+
 			builder.pop();
 		}
 	}

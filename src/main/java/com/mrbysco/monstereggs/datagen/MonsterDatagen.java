@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,7 +27,6 @@ import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
@@ -42,6 +41,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MonsterDatagen {
 	@SubscribeEvent
@@ -227,12 +227,12 @@ public class MonsterDatagen {
 			super(generator, MonsterEggs.MOD_ID, existingFileHelper);
 		}
 
-		private static Tag.Named<Block> forgeTag(String name) {
-			return BlockTags.bind(new ResourceLocation("forge", name).toString());
+		private static TagKey<Block> forgeTag(String name) {
+			return BlockTags.create(new ResourceLocation("forge", name));
 		}
 
-		private static Tags.IOptionalNamedTag<Block> optionalTag(String modid, String name) {
-			return BlockTags.createOptional(new ResourceLocation(modid, name));
+		private static TagKey<Block> modTag(String modid, String name) {
+			return BlockTags.create(new ResourceLocation(modid, name));
 		}
 
 		@Override
@@ -251,8 +251,8 @@ public class MonsterDatagen {
 
 		}
 
-		private static Tag.Named<Item> forgeTag(String name) {
-			return ItemTags.bind(new ResourceLocation("forge", name).toString());
+		private static TagKey<Item> forgeTag(String name) {
+			return ItemTags.create(new ResourceLocation("forge", name));
 		}
 	}
 }

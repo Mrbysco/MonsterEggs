@@ -60,10 +60,10 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 
 		BlockState blockstate = this.defaultBlockState().setValue(HANGING, false)
 				.setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
-		if(!level.getBlockState(clickedPos.below()).isAir()) {
+		if (!level.getBlockState(clickedPos.below()).isAir()) {
 			return blockstate;
 		} else {
-			if(!level.getBlockState(clickedPos.above()).isAir()) {
+			if (!level.getBlockState(clickedPos.above()).isAir()) {
 				blockstate = blockstate.setValue(HANGING, true);
 				return blockstate;
 			}
@@ -83,10 +83,10 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor levelAccessor, BlockPos currentPos, BlockPos facingPos) {
-		if(!levelAccessor.getBlockState(currentPos.below()).isAir()) {
+		if (!levelAccessor.getBlockState(currentPos.below()).isAir()) {
 			state.setValue(HANGING, false);
 		} else {
-			if(!levelAccessor.getBlockState(currentPos.above()).isAir()) {
+			if (!levelAccessor.getBlockState(currentPos.above()).isAir()) {
 				state.setValue(HANGING, true);
 			}
 		}
@@ -99,7 +99,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
-		if(state.getValue(HANGING)) {
+		if (state.getValue(HANGING)) {
 			return HANGING_SHAPE;
 		} else {
 			return SHAPE;
@@ -113,21 +113,21 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
 		super.fallOn(level, state, pos, entity, fallDistance);
-		if(fallDistance > 1 && level.random.nextBoolean()) {
+		if (fallDistance > 1 && level.random.nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
 		}
 	}
 
 	@Override
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-		if(!(entity instanceof Player) && level.random.nextBoolean()) {
+		if (!(entity instanceof Player) && level.random.nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
 		}
 	}
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if(!(entity instanceof Player) && level.random.nextBoolean()) {
+		if (!(entity instanceof Player) && level.random.nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
 		}
 	}
@@ -139,13 +139,13 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	private void destroyEgg(Level level, BlockState state, BlockPos pos, Entity entity) {
-		if(!level.isClientSide) {
+		if (!level.isClientSide) {
 			level.playSound(null, pos, EggRegistry.MONSTER_EGG_BROKEN.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-			level.destroyBlock(pos,false, entity);
+			level.destroyBlock(pos, false, entity);
 
 			EntityType<?> eggType = this.getType();
 			Entity eggEntity = eggType.create(level);
-			if(eggEntity != null) {
+			if (eggEntity != null) {
 				eggEntity.setPosRaw(pos.getX() + 0.5D, pos.getY() + EggConfig.COMMON.spawnOffset.get(), pos.getZ() + 0.5D);
 				level.addFreshEntity(eggEntity);
 			}
@@ -167,7 +167,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag) {
 		super.appendHoverText(stack, blockGetter, components, tooltipFlag);
-		if(EggConfig.COMMON.debugInfo.get()) {
+		if (EggConfig.COMMON.debugInfo.get()) {
 			components.add(new TranslatableComponent(this.getType().getDescriptionId()).withStyle(ChatFormatting.RED));
 		}
 	}

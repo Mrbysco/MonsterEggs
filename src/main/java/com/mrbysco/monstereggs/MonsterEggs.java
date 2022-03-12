@@ -18,30 +18,30 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(MonsterEggs.MOD_ID)
 public class MonsterEggs {
-    public static final String MOD_ID = "monstereggs";
-    public static final Logger LOGGER = LogManager.getLogger();
+	public static final String MOD_ID = "monstereggs";
+	public static final Logger LOGGER = LogManager.getLogger();
 
-    public static final CreativeModeTab TAB_EGGS = new CreativeModeTab(MOD_ID) {
-        public ItemStack makeIcon() {
-            return new ItemStack(EggRegistry.CREEPER_EGG.get());
-        }
-    };
+	public static final CreativeModeTab TAB_EGGS = new CreativeModeTab(MOD_ID) {
+		public ItemStack makeIcon() {
+			return new ItemStack(EggRegistry.CREEPER_EGG.get());
+		}
+	};
 
-    public MonsterEggs() {
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModLoadingContext.get().registerConfig(Type.COMMON, EggConfig.commonSpec);
-        eventBus.register(EggConfig.class);
+	public MonsterEggs() {
+		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		ModLoadingContext.get().registerConfig(Type.COMMON, EggConfig.commonSpec);
+		eventBus.register(EggConfig.class);
 
-        eventBus.addListener(this::commonSetup);
+		eventBus.addListener(this::commonSetup);
 
-        EggRegistry.BLOCKS.register(eventBus);
-        EggRegistry.ITEMS.register(eventBus);
-        EggRegistry.SOUND_EVENTS.register(eventBus);
+		EggRegistry.BLOCKS.register(eventBus);
+		EggRegistry.ITEMS.register(eventBus);
+		EggRegistry.SOUND_EVENTS.register(eventBus);
 
-        MinecraftForge.EVENT_BUS.register(new WorldgenHandler());
-    }
+		MinecraftForge.EVENT_BUS.register(new WorldgenHandler());
+	}
 
-    private void commonSetup(FMLCommonSetupEvent event) {
-        EggPlacements.initialize();
-    }
+	private void commonSetup(FMLCommonSetupEvent event) {
+		EggPlacements.initialize();
+	}
 }
