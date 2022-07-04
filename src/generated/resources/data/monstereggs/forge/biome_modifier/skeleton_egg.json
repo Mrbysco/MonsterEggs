@@ -1,0 +1,12 @@
+{
+  "type": "monstereggs:add_features_with_blacklist",
+  "blacklist": [
+    "#minecraft:is_nether",
+    "#minecraft:is_end"
+  ],
+  "features": "monstereggs:skeleton_egg",
+  "step": "underground_decoration",
+  "whitelist": [
+    "#minecraft:is_overworld"
+  ]
+}

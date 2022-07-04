@@ -1,8 +1,8 @@
 {
   "monster_egg.broken": {
-    "subtitle": "monstereggs.subtitle.monster_egg.broken",
     "sounds": [
       "monstereggs:monster_egg_break"
-    ]
+    ],
+    "subtitle": "monstereggs.subtitle.monster_egg.broken"
   }
 }

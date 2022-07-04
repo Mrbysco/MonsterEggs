@@ -6,7 +6,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -168,7 +167,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag) {
 		super.appendHoverText(stack, blockGetter, components, tooltipFlag);
 		if (EggConfig.COMMON.debugInfo.get()) {
-			components.add(new TranslatableComponent(this.getType().getDescriptionId()).withStyle(ChatFormatting.RED));
+			components.add(Component.translatable(this.getType().getDescriptionId()).withStyle(ChatFormatting.RED));
 		}
 	}
 }

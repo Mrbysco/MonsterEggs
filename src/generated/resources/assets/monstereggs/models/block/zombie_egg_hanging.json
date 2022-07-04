@@ -1,9 +1,9 @@
 {
   "parent": "monstereggs:block/monster_egg_hanging",
   "textures": {
+    "bottom": "monstereggs:block/zombie_egg_bottom",
     "particle": "monstereggs:block/zombie_egg",
     "side": "monstereggs:block/zombie_egg",
-    "top": "monstereggs:block/zombie_egg_top",
-    "bottom": "monstereggs:block/zombie_egg_bottom"
+    "top": "monstereggs:block/zombie_egg_top"
   }
 }

@@ -1,9 +1,9 @@
 {
   "parent": "monstereggs:block/monster_egg_hanging",
   "textures": {
+    "bottom": "monstereggs:block/cave_spider_egg_bottom",
     "particle": "monstereggs:block/cave_spider_egg",
     "side": "monstereggs:block/cave_spider_egg",
-    "top": "monstereggs:block/cave_spider_egg_top",
-    "bottom": "monstereggs:block/cave_spider_egg_bottom"
+    "top": "monstereggs:block/cave_spider_egg_top"
   }
 }

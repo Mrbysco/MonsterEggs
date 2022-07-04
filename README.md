@@ -1,4 +1,5 @@
-[![build](https://github.com/Mrbysco/MonsterEggs/actions/workflows/build.yml/badge.svg)](https://github.com/Mrbysco/MonsterEggs/actions/workflows/build.yml) [![](http://cf.way2muchnoise.eu/versions/579059.svg)](https://www.curseforge.com/minecraft/mc-mods/monster-eggs)
+[![build](https://github.com/Mrbysco/MonsterEggs/actions/workflows/build.yml/badge.svg)](https://github.com/Mrbysco/MonsterEggs/actions/workflows/build.yml) 
+[![](http://cf.way2muchnoise.eu/versions/579059.svg)](https://www.curseforge.com/minecraft/mc-mods/monster-eggs)
 
 # Monster Eggs #
 
