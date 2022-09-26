@@ -105,7 +105,7 @@ public class MonsterDatagen {
 		}
 		if (event.includeClient()) {
 			generator.addProvider(event.includeClient(), new Language(generator));
-			generator.addProvider(event.includeClient(), new SaltSoundProvider(generator, helper));
+			generator.addProvider(event.includeClient(), new MonsterSoundProvider(generator, helper));
 			generator.addProvider(event.includeClient(), new BlockModels(generator, helper));
 			generator.addProvider(event.includeClient(), new ItemModels(generator, helper));
 			generator.addProvider(event.includeClient(), new BlockStates(generator, helper));
@@ -300,8 +300,8 @@ public class MonsterDatagen {
 		}
 	}
 
-	public static class SaltSoundProvider extends SoundDefinitionsProvider {
-		public SaltSoundProvider(DataGenerator generator, ExistingFileHelper helper) {
+	public static class MonsterSoundProvider extends SoundDefinitionsProvider {
+		public MonsterSoundProvider(DataGenerator generator, ExistingFileHelper helper) {
 			super(generator, MonsterEggs.MOD_ID, helper);
 		}
 
