@@ -1,4 +1,4 @@
-// 1.19	2022-07-04T02:14:58.4310978	worldgen/placed_feature generator for monstereggs
+// 1.19.3	2022-12-13T21:26:29.7415692	worldgen/placed_feature generator for monstereggs
 96e971b3b6893519ad5433ed81c33a107ca8b02d data/monstereggs/worldgen/placed_feature/cave_spider_egg.json
 0e86d624e0b4a1a01bc6b3e8b0a1fe77900a803d data/monstereggs/worldgen/placed_feature/cave_spider_hanging_egg.json
 5c229d0d456b52d961c0f4b51fe3aaab984f8438 data/monstereggs/worldgen/placed_feature/creeper_egg.json

@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[41,)"
+loaderVersion="[44,)"
 issueTrackerURL="https://github.com/Mrbysco/MonsterEggs/issues"
 license="MIT"
 
@@ -15,12 +15,6 @@ Don't mind me, just adding some monster eggs to the underground.
 [[dependencies.monstereggs]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.19,1.20)"
-ordering="NONE"
-side="BOTH"
-[[dependencies.monstereggs]]
-modId="forge"
-mandatory=true
-versionRange="[41.0.94,)"
+versionRange="[1.19.3,1.20)"
 ordering="NONE"
 side="BOTH"
