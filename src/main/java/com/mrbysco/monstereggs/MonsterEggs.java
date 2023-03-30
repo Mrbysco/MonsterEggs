@@ -42,7 +42,7 @@ public class MonsterEggs {
 		TAB_EGGS = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "eggs"), builder ->
 				builder.icon(() -> new ItemStack(EggRegistry.CREEPER_EGG.get()))
 						.title(Component.translatable("itemGroup.monstereggs"))
-						.displayItems((features, output, hasPermissions) -> {
+						.displayItems((displayParameters, output) -> {
 							List<ItemStack> stacks = EggRegistry.BLOCKS.getEntries().stream().map(reg -> new ItemStack(reg.get())).toList();
 							output.acceptAll(stacks);
 						}));
