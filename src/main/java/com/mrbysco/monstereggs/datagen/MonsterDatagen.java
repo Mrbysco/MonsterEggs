@@ -1,15 +1,12 @@
 package com.mrbysco.monstereggs.datagen;
 
-import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.mrbysco.monstereggs.MonsterEggs;
 import com.mrbysco.monstereggs.registry.EggConfiguredFeatures;
 import com.mrbysco.monstereggs.registry.EggPlacedFeatures;
 import com.mrbysco.monstereggs.registry.EggRegistry;
-import com.mrbysco.monstereggs.worldgen.modifier.AddFeaturesBlacklistBiomeModifier;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -20,18 +17,11 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.resources.RegistryOps;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
@@ -40,23 +30,20 @@ import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.JsonCodecProvider;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
-import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MonsterDatagen {
@@ -71,14 +58,8 @@ public class MonsterDatagen {
 		if (event.includeServer()) {
 			generator.addProvider(event.includeServer(), new Loots(packOutput));
 
-			generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(
-					packOutput, helper, MonsterEggs.MOD_ID, ops, Registries.CONFIGURED_FEATURE, getConfiguredFeatures(provider)));
-
-			generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(
-					packOutput, helper, MonsterEggs.MOD_ID, ops, Registries.PLACED_FEATURE, getPlacedFeatures(provider)));
-
-			generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(
-					packOutput, helper, MonsterEggs.MOD_ID, ops, ForgeRegistries.Keys.BIOME_MODIFIERS, getBiomeModifiers(provider, ops)));
+			generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(
+					packOutput, CompletableFuture.supplyAsync(MonsterDatagen::getProvider), Set.of(MonsterEggs.MOD_ID)));
 		}
 		if (event.includeClient()) {
 			generator.addProvider(event.includeClient(), new Language(packOutput));
@@ -93,109 +74,12 @@ public class MonsterDatagen {
 		final RegistrySetBuilder registryBuilder = new RegistrySetBuilder();
 		registryBuilder.add(Registries.CONFIGURED_FEATURE, EggConfiguredFeatures::bootstrap);
 		registryBuilder.add(Registries.PLACED_FEATURE, EggPlacedFeatures::bootstrap);
+		registryBuilder.add(ForgeRegistries.Keys.BIOME_MODIFIERS, MonsterBiomeModifiers::bootstrap);
 		// We need the BIOME registry to be present so we can use a biome tag, doesn't matter that it's empty
 		registryBuilder.add(Registries.BIOME, context -> {
 		});
 		RegistryAccess.Frozen regAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
 		return registryBuilder.buildPatch(regAccess, VanillaRegistries.createLookup());
-	}
-
-	public static Map<ResourceLocation, ConfiguredFeature<?, ?>> getConfiguredFeatures(HolderLookup.Provider provider) {
-
-		Map<ResourceLocation, ConfiguredFeature<?, ?>> map = Maps.newHashMap();
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.CAVE_SPIDER_HANGING_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.CAVE_SPIDER_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.CREEPER_HANGING_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.CREEPER_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.ENDERMAN_HANGING_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.ENDERMAN_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.SKELETON_HANGING_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.SKELETON_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.SPIDER_HANGING_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.SPIDER_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.ZOMBIE_HANGING_EGG);
-		fillConfiguredMap(map, provider, EggConfiguredFeatures.ZOMBIE_EGG);
-
-		return map;
-	}
-
-	public static void fillConfiguredMap(Map<ResourceLocation, ConfiguredFeature<?, ?>> map, HolderLookup.Provider provider, ResourceKey<ConfiguredFeature<?, ?>> featureKey) {
-		final HolderLookup.RegistryLookup<ConfiguredFeature<?, ?>> configuredReg = provider.lookupOrThrow(Registries.CONFIGURED_FEATURE);
-		map.put(featureKey.location(), configuredReg.getOrThrow(featureKey).value());
-	}
-
-	public static Map<ResourceLocation, PlacedFeature> getPlacedFeatures(HolderLookup.Provider provider) {
-		Map<ResourceLocation, PlacedFeature> map = Maps.newHashMap();
-
-		fillPlacedMap(map, provider, EggPlacedFeatures.CAVE_SPIDER_HANGING_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.CAVE_SPIDER_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.CREEPER_HANGING_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.CREEPER_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.ENDERMAN_HANGING_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.ENDERMAN_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.SKELETON_HANGING_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.SKELETON_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.SPIDER_HANGING_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.SPIDER_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.ZOMBIE_HANGING_EGG);
-		fillPlacedMap(map, provider, EggPlacedFeatures.ZOMBIE_EGG);
-
-		return map;
-	}
-
-	public static void fillPlacedMap(Map<ResourceLocation, PlacedFeature> map, HolderLookup.Provider provider, ResourceKey<PlacedFeature> featureKey) {
-		final HolderLookup.RegistryLookup<PlacedFeature> configuredReg = provider.lookupOrThrow(Registries.PLACED_FEATURE);
-		map.put(featureKey.location(), configuredReg.getOrThrow(featureKey).value());
-	}
-
-	public static Map<ResourceLocation, BiomeModifier> getBiomeModifiers(HolderLookup.Provider provider, RegistryOps<JsonElement> ops) {
-		Map<ResourceLocation, BiomeModifier> map = Maps.newHashMap();
-
-		List<TagKey<Biome>> overworld = List.of(BiomeTags.IS_OVERWORLD);
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "cave_spider_hanging_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "cave_spider_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "creeper_hanging_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "creeper_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "enderman_hanging_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "enderman_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "skeleton_hanging_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "skeleton_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "spider_hanging_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "spider_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "zombie_hanging_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-		map.putAll(generateBiomeModifier(provider, ops, new ResourceLocation(MonsterEggs.MOD_ID, "zombie_egg"),
-				overworld, List.of(BiomeTags.IS_NETHER, BiomeTags.IS_END), Decoration.UNDERGROUND_DECORATION));
-
-		return map;
-	}
-
-
-	private static Map<ResourceLocation, BiomeModifier> generateBiomeModifier(HolderLookup.Provider provider, RegistryOps<JsonElement> ops, ResourceLocation location,
-																			  @NotNull List<TagKey<Biome>> tags, @Nullable List<TagKey<Biome>> blacklistTags, Decoration decorationType) {
-		final HolderLookup.RegistryLookup<Biome> biomeReg = provider.lookupOrThrow(Registries.BIOME);
-		final HolderLookup.RegistryLookup<PlacedFeature> placedReg = provider.lookupOrThrow(Registries.PLACED_FEATURE);
-
-		final List<HolderSet<Biome>> tagHolders = tags.stream()
-				.map(tag -> HolderSet.emptyNamed(biomeReg, tag)).collect(Collectors.toList());
-		final List<HolderSet<Biome>> blacklistTagHolders = blacklistTags.isEmpty() ? List.of() : blacklistTags.stream()
-				.map(tag -> HolderSet.emptyNamed(biomeReg, tag)).collect(Collectors.toList());
-		final BiomeModifier addFeature = new AddFeaturesBlacklistBiomeModifier(
-				tagHolders,
-				blacklistTagHolders,
-				HolderSet.direct(placedReg.get(ResourceKey.create(Registries.PLACED_FEATURE, location)).orElseThrow()),
-				decorationType);
-		return Map.of(location, addFeature);
 	}
 
 	private static class Loots extends LootTableProvider {
