@@ -1,7 +1,7 @@
-// 1.19.4	2023-03-30T17:09:41.3107125	Loot Tables
-1d4929d7d6176f60e5ea991a577527ed251ef375 data/monstereggs/loot_tables/blocks/cave_spider_egg.json
-1d4929d7d6176f60e5ea991a577527ed251ef375 data/monstereggs/loot_tables/blocks/creeper_egg.json
-1d4929d7d6176f60e5ea991a577527ed251ef375 data/monstereggs/loot_tables/blocks/enderman_egg.json
-1d4929d7d6176f60e5ea991a577527ed251ef375 data/monstereggs/loot_tables/blocks/skeleton_egg.json
-1d4929d7d6176f60e5ea991a577527ed251ef375 data/monstereggs/loot_tables/blocks/spider_egg.json
-1d4929d7d6176f60e5ea991a577527ed251ef375 data/monstereggs/loot_tables/blocks/zombie_egg.json
+// 1.20.1	2023-06-22T16:30:48.8555555	Loot Tables
+d3bf1c94a5a666ad8c8414856fadaf37b2a40150 data/monstereggs/loot_tables/blocks/cave_spider_egg.json
+defe1da5310b0cdf0ca74108e19c5f55e64ae676 data/monstereggs/loot_tables/blocks/creeper_egg.json
+2240b3fd4d7c5013ba2fa34e595c3f51a1750356 data/monstereggs/loot_tables/blocks/enderman_egg.json
+b4e1b6c550be5bee912da195d0c2219a94605f67 data/monstereggs/loot_tables/blocks/skeleton_egg.json
+1ccaaf94a162afb8b7ef9b86773fa59a3de15c94 data/monstereggs/loot_tables/blocks/spider_egg.json
+7958abc1670072d337564785cd94c93049a35139 data/monstereggs/loot_tables/blocks/zombie_egg.json
