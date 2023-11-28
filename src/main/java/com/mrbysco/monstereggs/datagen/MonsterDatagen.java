@@ -3,6 +3,7 @@ package com.mrbysco.monstereggs.datagen;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.mrbysco.monstereggs.MonsterEggs;
+import com.mrbysco.monstereggs.block.MonsterEggBlock;
 import com.mrbysco.monstereggs.registry.EggConfiguredFeatures;
 import com.mrbysco.monstereggs.registry.EggPlacedFeatures;
 import com.mrbysco.monstereggs.registry.EggRegistry;
@@ -25,24 +26,25 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraftforge.client.model.generators.BlockModelProvider;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.common.data.SoundDefinitionsProvider;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MonsterDatagen {
@@ -73,7 +75,7 @@ public class MonsterDatagen {
 		final RegistrySetBuilder registryBuilder = new RegistrySetBuilder();
 		registryBuilder.add(Registries.CONFIGURED_FEATURE, EggConfiguredFeatures::bootstrap);
 		registryBuilder.add(Registries.PLACED_FEATURE, EggPlacedFeatures::bootstrap);
-		registryBuilder.add(ForgeRegistries.Keys.BIOME_MODIFIERS, MonsterBiomeModifiers::bootstrap);
+		registryBuilder.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, MonsterBiomeModifiers::bootstrap);
 		// We need the BIOME registry to be present so we can use a biome tag, doesn't matter that it's empty
 		registryBuilder.add(Registries.BIOME, context -> {
 		});
@@ -106,7 +108,7 @@ public class MonsterDatagen {
 
 			@Override
 			protected Iterable<Block> getKnownBlocks() {
-				return (Iterable<Block>) EggRegistry.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
+				return (Iterable<Block>) EggRegistry.BLOCKS.getEntries().stream().map(holder -> (Block) holder.get())::iterator;
 			}
 		}
 
@@ -135,8 +137,12 @@ public class MonsterDatagen {
 			addBlock(EggRegistry.ZOMBIE_EGG, "Mysterious Shell");
 		}
 
-		public void addSubtitle(RegistryObject<SoundEvent> sound, String name) {
-			String path = MonsterEggs.MOD_ID + ".subtitle." + sound.getId().getPath();
+		public void addSubtitle(Supplier<SoundEvent> sound, String name) {
+			this.addSubtitle(sound.get(), name);
+		}
+
+		public void addSubtitle(SoundEvent sound, String name) {
+			String path = MonsterEggs.MOD_ID + ".subtitle." + sound.getLocation().getPath();
 			this.add(path, name);
 		}
 	}
@@ -169,18 +175,19 @@ public class MonsterDatagen {
 
 		@Override
 		protected void registerStatesAndModels() {
-			makeEgg(EggRegistry.CAVE_SPIDER_EGG.get());
-			makeEgg(EggRegistry.CREEPER_EGG.get());
-			makeEgg(EggRegistry.ENDERMAN_EGG.get());
-			makeEgg(EggRegistry.SKELETON_EGG.get());
-			makeEgg(EggRegistry.SPIDER_EGG.get());
-			makeEgg(EggRegistry.ZOMBIE_EGG.get());
+			makeEgg(EggRegistry.CAVE_SPIDER_EGG);
+			makeEgg(EggRegistry.CREEPER_EGG);
+			makeEgg(EggRegistry.ENDERMAN_EGG);
+			makeEgg(EggRegistry.SKELETON_EGG);
+			makeEgg(EggRegistry.SPIDER_EGG);
+			makeEgg(EggRegistry.ZOMBIE_EGG);
 		}
 
-		private void makeEgg(Block block) {
-			ModelFile model = models().getExistingFile(modLoc("block/" + ForgeRegistries.BLOCKS.getKey(block).getPath()));
-			ModelFile model2 = models().getExistingFile(modLoc("block/" + ForgeRegistries.BLOCKS.getKey(block).getPath() + "_hanging"));
-			getVariantBuilder(block)
+		private void makeEgg(DeferredBlock<MonsterEggBlock> block) {
+			ResourceLocation location = block.getId();
+			ModelFile model = models().getExistingFile(modLoc("block/" + location.getPath()));
+			ModelFile model2 = models().getExistingFile(modLoc("block/" + location.getPath() + "_hanging"));
+			getVariantBuilder(block.get())
 					.partialState().with(BlockStateProperties.HANGING, false)
 					.modelForState().modelFile(model).addModel()
 					.partialState().with(BlockStateProperties.HANGING, true)
@@ -195,16 +202,15 @@ public class MonsterDatagen {
 
 		@Override
 		protected void registerModels() {
-			makeEgg(EggRegistry.CAVE_SPIDER_EGG.get());
-			makeEgg(EggRegistry.CREEPER_EGG.get());
-			makeEgg(EggRegistry.ENDERMAN_EGG.get());
-			makeEgg(EggRegistry.SKELETON_EGG.get());
-			makeEgg(EggRegistry.SPIDER_EGG.get());
-			makeEgg(EggRegistry.ZOMBIE_EGG.get());
+			makeEgg(EggRegistry.CAVE_SPIDER_EGG.getId());
+			makeEgg(EggRegistry.CREEPER_EGG.getId());
+			makeEgg(EggRegistry.ENDERMAN_EGG.getId());
+			makeEgg(EggRegistry.SKELETON_EGG.getId());
+			makeEgg(EggRegistry.SPIDER_EGG.getId());
+			makeEgg(EggRegistry.ZOMBIE_EGG.getId());
 		}
 
-		private void makeEgg(Block block) {
-			ResourceLocation location = ForgeRegistries.BLOCKS.getKey(block);
+		private void makeEgg(ResourceLocation location) {
 			withExistingParent(location.getPath(), modLoc("block/monster_egg"))
 					.texture("particle", "block/" + location.getPath())
 					.texture("side", "block/" + location.getPath())
@@ -225,16 +231,16 @@ public class MonsterDatagen {
 
 		@Override
 		protected void registerModels() {
-			makeEgg(EggRegistry.CAVE_SPIDER_EGG.get());
-			makeEgg(EggRegistry.CREEPER_EGG.get());
-			makeEgg(EggRegistry.ENDERMAN_EGG.get());
-			makeEgg(EggRegistry.SKELETON_EGG.get());
-			makeEgg(EggRegistry.SPIDER_EGG.get());
-			makeEgg(EggRegistry.ZOMBIE_EGG.get());
+			makeEgg(EggRegistry.CAVE_SPIDER_EGG.getId());
+			makeEgg(EggRegistry.CREEPER_EGG.getId());
+			makeEgg(EggRegistry.ENDERMAN_EGG.getId());
+			makeEgg(EggRegistry.SKELETON_EGG.getId());
+			makeEgg(EggRegistry.SPIDER_EGG.getId());
+			makeEgg(EggRegistry.ZOMBIE_EGG.getId());
 		}
 
-		private void makeEgg(Block block) {
-			withExistingParent(ForgeRegistries.BLOCKS.getKey(block).getPath(), modLoc("block/" + ForgeRegistries.BLOCKS.getKey(block).getPath()));
+		private void makeEgg(ResourceLocation location) {
+			withExistingParent(location.getPath(), modLoc("block/" + location.getPath()));
 		}
 	}
 }

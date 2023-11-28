@@ -14,8 +14,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.world.BiomeModifier;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,18 +24,18 @@ import java.util.stream.Collectors;
 
 public class MonsterBiomeModifiers {
 
-	public static final ResourceKey<BiomeModifier> CAVE_SPIDER_HANGING_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "cave_spider_hanging_egg"));
-	public static final ResourceKey<BiomeModifier> CAVE_SPIDER_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "cave_spider_egg"));
-	public static final ResourceKey<BiomeModifier> CREEPER_HANGING_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "creeper_hanging_egg"));
-	public static final ResourceKey<BiomeModifier> CREEPER_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "creeper_egg"));
-	public static final ResourceKey<BiomeModifier> ENDERMAN_HANGING_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "enderman_hanging_egg"));
-	public static final ResourceKey<BiomeModifier> ENDERMAN_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "enderman_egg"));
-	public static final ResourceKey<BiomeModifier> SKELETON_HANGING_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "skeleton_hanging_egg"));
-	public static final ResourceKey<BiomeModifier> SKELETON_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "skeleton_egg"));
-	public static final ResourceKey<BiomeModifier> SPIDER_HANGING_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "spider_hanging_egg"));
-	public static final ResourceKey<BiomeModifier> SPIDER_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "spider_egg"));
-	public static final ResourceKey<BiomeModifier> ZOMBIE_HANGING_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "zombie_hanging_egg"));
-	public static final ResourceKey<BiomeModifier> ZOMBIE_EGG = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, "zombie_egg"));
+	public static final ResourceKey<BiomeModifier> CAVE_SPIDER_HANGING_EGG = createKey("cave_spider_hanging_egg");
+	public static final ResourceKey<BiomeModifier> CAVE_SPIDER_EGG = createKey("cave_spider_egg");
+	public static final ResourceKey<BiomeModifier> CREEPER_HANGING_EGG = createKey("creeper_hanging_egg");
+	public static final ResourceKey<BiomeModifier> CREEPER_EGG = createKey("creeper_egg");
+	public static final ResourceKey<BiomeModifier> ENDERMAN_HANGING_EGG = createKey("enderman_hanging_egg");
+	public static final ResourceKey<BiomeModifier> ENDERMAN_EGG = createKey("enderman_egg");
+	public static final ResourceKey<BiomeModifier> SKELETON_HANGING_EGG = createKey("skeleton_hanging_egg");
+	public static final ResourceKey<BiomeModifier> SKELETON_EGG = createKey("skeleton_egg");
+	public static final ResourceKey<BiomeModifier> SPIDER_HANGING_EGG = createKey("spider_hanging_egg");
+	public static final ResourceKey<BiomeModifier> SPIDER_EGG = createKey("spider_egg");
+	public static final ResourceKey<BiomeModifier> ZOMBIE_HANGING_EGG = createKey("zombie_hanging_egg");
+	public static final ResourceKey<BiomeModifier> ZOMBIE_EGG = createKey("zombie_egg");
 
 	public static void bootstrap(BootstapContext<BiomeModifier> context) {
 		HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
@@ -87,5 +87,9 @@ public class MonsterBiomeModifiers {
 				HolderSet.direct(placedGetter.getOrThrow(placedKey)),
 				decorationType);
 		context.register(modifierKey, addFeature);
+	}
+
+	private static ResourceKey<BiomeModifier> createKey(String path) {
+		return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, path));
 	}
 }
