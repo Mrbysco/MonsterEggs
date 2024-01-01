@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -47,7 +46,7 @@ public class EggConfiguredFeatures {
 		FeatureUtils.register(context, ZOMBIE_EGG, Feature.RANDOM_PATCH, getConfiguredEgg(EggRegistry.ZOMBIE_EGG.get(), Direction.DOWN, 24));
 	}
 
-	public static <FC extends FeatureConfiguration, F extends Feature<FC>> RandomPatchConfiguration getConfiguredEgg(Block block, Direction direction, int tries) {
+	public static RandomPatchConfiguration getConfiguredEgg(Block block, Direction direction, int tries) {
 		BlockState state = block.defaultBlockState();
 		if (direction == Direction.UP) {
 			state = state.setValue(MonsterEggBlock.HANGING, true);

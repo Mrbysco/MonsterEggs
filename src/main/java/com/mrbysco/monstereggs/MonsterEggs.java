@@ -6,7 +6,6 @@ import com.mrbysco.monstereggs.registry.EggRegistry;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.fml.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,8 +15,7 @@ public class MonsterEggs {
 	public static final String MOD_ID = "monstereggs";
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	public MonsterEggs() {
-		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+	public MonsterEggs(IEventBus eventBus) {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EggConfig.commonSpec);
 		eventBus.register(EggConfig.class);
 

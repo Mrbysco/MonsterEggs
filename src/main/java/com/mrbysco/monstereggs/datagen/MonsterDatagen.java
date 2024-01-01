@@ -1,13 +1,11 @@
 package com.mrbysco.monstereggs.datagen;
 
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
 import com.mrbysco.monstereggs.MonsterEggs;
 import com.mrbysco.monstereggs.block.MonsterEggBlock;
 import com.mrbysco.monstereggs.registry.EggConfiguredFeatures;
 import com.mrbysco.monstereggs.registry.EggPlacedFeatures;
 import com.mrbysco.monstereggs.registry.EggRegistry;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Cloner;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,7 +15,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.registries.VanillaRegistries;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.flag.FeatureFlags;
@@ -50,8 +47,6 @@ import java.util.function.Supplier;
 public class MonsterDatagen {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
-		HolderLookup.Provider provider = getProvider();
-		final RegistryOps<JsonElement> ops = RegistryOps.create(JsonOps.INSTANCE, provider);
 		DataGenerator generator = event.getGenerator();
 		PackOutput packOutput = generator.getPackOutput();
 		ExistingFileHelper helper = event.getExistingFileHelper();
@@ -71,16 +66,18 @@ public class MonsterDatagen {
 		}
 	}
 
-	private static HolderLookup.Provider getProvider() {
+	private static RegistrySetBuilder.PatchedRegistries getProvider() {
 		final RegistrySetBuilder registryBuilder = new RegistrySetBuilder();
 		registryBuilder.add(Registries.CONFIGURED_FEATURE, EggConfiguredFeatures::bootstrap);
 		registryBuilder.add(Registries.PLACED_FEATURE, EggPlacedFeatures::bootstrap);
 		registryBuilder.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, MonsterBiomeModifiers::bootstrap);
-		// We need the BIOME registry to be present so we can use a biome tag, doesn't matter that it's empty
-		registryBuilder.add(Registries.BIOME, context -> {
+		// We need the BIOME registry to be present, so we can use a biome tag, doesn't matter that it's empty
+		registryBuilder.add(Registries.BIOME, $ -> {
 		});
 		RegistryAccess.Frozen regAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-		return registryBuilder.buildPatch(regAccess, VanillaRegistries.createLookup());
+		Cloner.Factory cloner$factory = new Cloner.Factory();
+		net.neoforged.neoforge.registries.DataPackRegistriesHooks.getDataPackRegistriesWithDimensions().forEach(data -> data.runWithArguments(cloner$factory::addCodec));
+		return registryBuilder.buildPatch(regAccess, VanillaRegistries.createLookup(), cloner$factory);
 	}
 
 	private static class Loots extends LootTableProvider {
