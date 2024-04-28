@@ -3,7 +3,7 @@ package com.mrbysco.monstereggs.registry;
 import com.mrbysco.monstereggs.MonsterEggs;
 import com.mrbysco.monstereggs.block.MonsterEggBlock;
 import net.minecraft.core.Direction;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +31,7 @@ public class EggConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> ZOMBIE_HANGING_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "zombie_hanging_egg").toString());
 	public static final ResourceKey<ConfiguredFeature<?, ?>> ZOMBIE_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "zombie_egg").toString());
 
-	public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
+	public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 		FeatureUtils.register(context, CAVE_SPIDER_HANGING_EGG, Feature.RANDOM_PATCH, getConfiguredEgg(EggRegistry.CAVE_SPIDER_EGG.get(), Direction.UP, 24));
 		FeatureUtils.register(context, CAVE_SPIDER_EGG, Feature.RANDOM_PATCH, getConfiguredEgg(EggRegistry.CAVE_SPIDER_EGG.get(), Direction.DOWN, 24));
 		FeatureUtils.register(context, CREEPER_HANGING_EGG, Feature.RANDOM_PATCH, getConfiguredEgg(EggRegistry.CREEPER_EGG.get(), Direction.UP, 24));

@@ -1,6 +1,6 @@
 package com.mrbysco.monstereggs.registry;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mrbysco.monstereggs.MonsterEggs;
 import com.mrbysco.monstereggs.worldgen.modifier.AddFeaturesBlacklistBiomeModifier;
@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class EggModifiers {
-	public static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, MonsterEggs.MOD_ID);
+	public static final DeferredRegister<MapCodec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, MonsterEggs.MOD_ID);
 
-	public static final Supplier<Codec<AddFeaturesBlacklistBiomeModifier>> ADD_FEATURES_BLACKLIST_BIOME_MODIFIER_TYPE = BIOME_MODIFIER_SERIALIZERS.register("add_features_with_blacklist", () ->
-			RecordCodecBuilder.create(builder -> builder.group(
+	public static final Supplier<MapCodec<AddFeaturesBlacklistBiomeModifier>> ADD_FEATURES_BLACKLIST_BIOME_MODIFIER_TYPE = BIOME_MODIFIER_SERIALIZERS.register("add_features_with_blacklist", () ->
+			RecordCodecBuilder.mapCodec(builder -> builder.group(
 					Biome.LIST_CODEC.listOf().fieldOf("whitelist").forGetter(AddFeaturesBlacklistBiomeModifier::biomes),
 					Biome.LIST_CODEC.listOf().fieldOf("blacklist").orElse(new ArrayList<>()).forGetter(AddFeaturesBlacklistBiomeModifier::blacklistBiomes),
 					PlacedFeature.LIST_CODEC.fieldOf("features").forGetter(AddFeaturesBlacklistBiomeModifier::features),

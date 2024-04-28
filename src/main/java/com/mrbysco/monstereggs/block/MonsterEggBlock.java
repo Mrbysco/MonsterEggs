@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -164,8 +165,8 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	 */
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag tooltipFlag) {
-		super.appendHoverText(stack, blockGetter, components, tooltipFlag);
+	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
+		super.appendHoverText(stack, context, components, tooltipFlag);
 		if (EggConfig.COMMON.debugInfo.get()) {
 			components.add(Component.translatable(this.getType().getDescriptionId()).withStyle(ChatFormatting.RED));
 		}

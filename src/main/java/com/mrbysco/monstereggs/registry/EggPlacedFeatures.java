@@ -4,7 +4,7 @@ import com.mrbysco.monstereggs.MonsterEggs;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -39,7 +39,7 @@ public class EggPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> ZOMBIE_HANGING_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "zombie_hanging_egg").toString());
 	public static final ResourceKey<PlacedFeature> ZOMBIE_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "zombie_egg").toString());
 
-	public static void bootstrap(BootstapContext<PlacedFeature> context) {
+	public static void bootstrap(BootstrapContext<PlacedFeature> context) {
 		HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
 
 		PlacementUtils.register(context, CAVE_SPIDER_HANGING_EGG, holdergetter.getOrThrow(EggConfiguredFeatures.CAVE_SPIDER_HANGING_EGG), getEggModifiers(Direction.UP, 1, 4));

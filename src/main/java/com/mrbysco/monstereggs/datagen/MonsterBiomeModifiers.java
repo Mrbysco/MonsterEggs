@@ -6,7 +6,7 @@ import com.mrbysco.monstereggs.worldgen.modifier.AddFeaturesBlacklistBiomeModifi
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
@@ -37,7 +37,7 @@ public class MonsterBiomeModifiers {
 	public static final ResourceKey<BiomeModifier> ZOMBIE_HANGING_EGG = createKey("zombie_hanging_egg");
 	public static final ResourceKey<BiomeModifier> ZOMBIE_EGG = createKey("zombie_egg");
 
-	public static void bootstrap(BootstapContext<BiomeModifier> context) {
+	public static void bootstrap(BootstrapContext<BiomeModifier> context) {
 		HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
 		HolderGetter<PlacedFeature> placedGetter = context.lookup(Registries.PLACED_FEATURE);
 
@@ -69,7 +69,7 @@ public class MonsterBiomeModifiers {
 	}
 
 
-	private static void generateBiomeModifier(BootstapContext<BiomeModifier> context,
+	private static void generateBiomeModifier(BootstrapContext<BiomeModifier> context,
 											  HolderGetter<Biome> biomeGetter,
 											  HolderGetter<PlacedFeature> placedGetter,
 											  ResourceKey<BiomeModifier> modifierKey,

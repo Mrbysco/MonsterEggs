@@ -1,6 +1,7 @@
 package com.mrbysco.monstereggs.worldgen.modifier;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mrbysco.monstereggs.registry.EggModifiers;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -26,7 +27,7 @@ public record AddFeaturesBlacklistBiomeModifier(List<HolderSet<Biome>> biomes, L
 	}
 
 	@Override
-	public Codec<? extends BiomeModifier> codec() {
+	public MapCodec<? extends BiomeModifier> codec() {
 		return EggModifiers.ADD_FEATURES_BLACKLIST_BIOME_MODIFIER_TYPE.get();
 	}
 }
