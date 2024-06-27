@@ -92,8 +92,8 @@ public class MonsterDatagen {
 
 		public static class MonsterBlockTables extends BlockLootSubProvider {
 
-			protected MonsterBlockTables() {
-				super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+			protected MonsterBlockTables(HolderLookup.Provider provider) {
+				super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
 			}
 
 			@Override
@@ -164,7 +164,7 @@ public class MonsterDatagen {
 		}
 
 		public ResourceLocation modLoc(String name) {
-			return new ResourceLocation(MonsterEggs.MOD_ID, name);
+			return ResourceLocation.fromNamespaceAndPath(MonsterEggs.MOD_ID, name);
 		}
 	}
 

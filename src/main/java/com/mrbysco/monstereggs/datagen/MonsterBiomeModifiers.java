@@ -78,9 +78,9 @@ public class MonsterBiomeModifiers {
 											  @Nullable List<TagKey<Biome>> blacklistTags,
 											  GenerationStep.Decoration decorationType) {
 		final List<HolderSet<Biome>> tagHolders = tags.stream()
-				.map(tag -> biomeGetter.getOrThrow(tag)).collect(Collectors.toList());
-		final List<HolderSet<Biome>> blacklistTagHolders = blacklistTags.isEmpty() ? List.of() : blacklistTags.stream()
-				.map(tag -> biomeGetter.getOrThrow(tag)).collect(Collectors.toList());
+				.map(biomeGetter::getOrThrow).collect(Collectors.toList());
+		final List<HolderSet<Biome>> blacklistTagHolders = (blacklistTags == null || blacklistTags.isEmpty()) ? List.of() : blacklistTags.stream()
+				.map(biomeGetter::getOrThrow).collect(Collectors.toList());
 		final BiomeModifier addFeature = new AddFeaturesBlacklistBiomeModifier(
 				tagHolders,
 				blacklistTagHolders,
@@ -90,6 +90,6 @@ public class MonsterBiomeModifiers {
 	}
 
 	private static ResourceKey<BiomeModifier> createKey(String path) {
-		return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MonsterEggs.MOD_ID, path));
+		return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation.fromNamespaceAndPath(MonsterEggs.MOD_ID, path));
 	}
 }

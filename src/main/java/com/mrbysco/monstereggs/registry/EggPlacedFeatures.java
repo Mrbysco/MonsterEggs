@@ -26,19 +26,23 @@ import net.minecraft.world.level.levelgen.placement.SurfaceRelativeThresholdFilt
 import java.util.List;
 
 public class EggPlacedFeatures {
-	public static final ResourceKey<PlacedFeature> CAVE_SPIDER_HANGING_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "cave_spider_hanging_egg").toString());
-	public static final ResourceKey<PlacedFeature> CAVE_SPIDER_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "cave_spider_egg").toString());
-	public static final ResourceKey<PlacedFeature> CREEPER_HANGING_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "creeper_hanging_egg").toString());
-	public static final ResourceKey<PlacedFeature> CREEPER_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "creeper_egg").toString());
-	public static final ResourceKey<PlacedFeature> ENDERMAN_HANGING_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "enderman_hanging_egg").toString());
-	public static final ResourceKey<PlacedFeature> ENDERMAN_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "enderman_egg").toString());
-	public static final ResourceKey<PlacedFeature> SKELETON_HANGING_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "skeleton_hanging_egg").toString());
-	public static final ResourceKey<PlacedFeature> SKELETON_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "skeleton_egg").toString());
-	public static final ResourceKey<PlacedFeature> SPIDER_HANGING_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "spider_hanging_egg").toString());
-	public static final ResourceKey<PlacedFeature> SPIDER_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "spider_egg").toString());
-	public static final ResourceKey<PlacedFeature> ZOMBIE_HANGING_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "zombie_hanging_egg").toString());
-	public static final ResourceKey<PlacedFeature> ZOMBIE_EGG = PlacementUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "zombie_egg").toString());
-
+	public static final ResourceKey<PlacedFeature> CAVE_SPIDER_HANGING_EGG = createKey("cave_spider_hanging_egg");
+	public static final ResourceKey<PlacedFeature> CAVE_SPIDER_EGG = createKey("cave_spider_egg");
+	public static final ResourceKey<PlacedFeature> CREEPER_HANGING_EGG = createKey("creeper_hanging_egg");
+	public static final ResourceKey<PlacedFeature> CREEPER_EGG = createKey("creeper_egg");
+	public static final ResourceKey<PlacedFeature> ENDERMAN_HANGING_EGG = createKey("enderman_hanging_egg");
+	public static final ResourceKey<PlacedFeature> ENDERMAN_EGG = createKey("enderman_egg");
+	public static final ResourceKey<PlacedFeature> SKELETON_HANGING_EGG = createKey("skeleton_hanging_egg");
+	public static final ResourceKey<PlacedFeature> SKELETON_EGG = createKey("skeleton_egg");
+	public static final ResourceKey<PlacedFeature> SPIDER_HANGING_EGG = createKey("spider_hanging_egg");
+	public static final ResourceKey<PlacedFeature> SPIDER_EGG = createKey("spider_egg");
+	public static final ResourceKey<PlacedFeature> ZOMBIE_HANGING_EGG = createKey("zombie_hanging_egg");
+	public static final ResourceKey<PlacedFeature> ZOMBIE_EGG = createKey("zombie_egg");
+	
+	public static ResourceKey<PlacedFeature> createKey(String pName) {
+		return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(MonsterEggs.MOD_ID, pName));
+	}
+	
 	public static void bootstrap(BootstrapContext<PlacedFeature> context) {
 		HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
 

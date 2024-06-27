@@ -31,7 +31,7 @@ public class EggRegistry {
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MonsterEggs.MOD_ID);
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, MonsterEggs.MOD_ID);
 
-	public static final DeferredHolder<SoundEvent, SoundEvent> MONSTER_EGG_BROKEN = SOUND_EVENTS.register("monster_egg.broken", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MonsterEggs.MOD_ID, "monster_egg.broken")));
+	public static final DeferredHolder<SoundEvent, SoundEvent> MONSTER_EGG_BROKEN = SOUND_EVENTS.register("monster_egg.broken", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MonsterEggs.MOD_ID, "monster_egg.broken")));
 
 	public static final DeferredBlock<MonsterEggBlock> CAVE_SPIDER_EGG = BLOCKS.register("cave_spider_egg", () -> new MonsterEggBlock(() -> EntityType.CAVE_SPIDER, Block.Properties.ofFullCopy(Blocks.TURTLE_EGG).mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)));
 	public static final DeferredBlock<MonsterEggBlock> CREEPER_EGG = BLOCKS.register("creeper_egg", () -> new MonsterEggBlock(() -> EntityType.CREEPER, Block.Properties.ofFullCopy(Blocks.TURTLE_EGG).mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)));

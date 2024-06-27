@@ -1,6 +1,5 @@
 package com.mrbysco.monstereggs.worldgen.modifier;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mrbysco.monstereggs.registry.EggModifiers;
 import net.minecraft.core.Holder;

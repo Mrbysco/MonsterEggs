@@ -48,7 +48,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	public MonsterEggBlock(Supplier<? extends EntityType<? extends Mob>> type, Properties properties) {
 		super(properties);
 		this.typeSupplier = type;
-		this.registerDefaultState(this.stateDefinition.any().setValue(HANGING, Boolean.valueOf(false)).setValue(WATERLOGGED, Boolean.valueOf(false)));
+		this.registerDefaultState(this.stateDefinition.any().setValue(HANGING, Boolean.FALSE).setValue(WATERLOGGED, Boolean.FALSE));
 	}
 
 	@Nullable
@@ -59,7 +59,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 		FluidState fluidstate = level.getFluidState(clickedPos);
 
 		BlockState blockstate = this.defaultBlockState().setValue(HANGING, false)
-				.setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+				.setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 		if (!level.getBlockState(clickedPos.below()).isAir()) {
 			return blockstate;
 		} else {

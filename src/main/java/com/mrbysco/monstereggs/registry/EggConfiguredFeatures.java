@@ -3,6 +3,7 @@ package com.mrbysco.monstereggs.registry;
 import com.mrbysco.monstereggs.MonsterEggs;
 import com.mrbysco.monstereggs.block.MonsterEggBlock;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
@@ -18,18 +19,22 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import java.util.List;
 
 public class EggConfiguredFeatures {
-	public static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_SPIDER_HANGING_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "cave_spider_hanging_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_SPIDER_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "cave_spider_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> CREEPER_HANGING_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "creeper_hanging_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> CREEPER_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "creeper_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> ENDERMAN_HANGING_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "enderman_hanging_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> ENDERMAN_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "enderman_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> SKELETON_HANGING_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "skeleton_hanging_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> SKELETON_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "skeleton_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> SPIDER_HANGING_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "spider_hanging_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> SPIDER_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "spider_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> ZOMBIE_HANGING_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "zombie_hanging_egg").toString());
-	public static final ResourceKey<ConfiguredFeature<?, ?>> ZOMBIE_EGG = FeatureUtils.createKey(new ResourceLocation(MonsterEggs.MOD_ID, "zombie_egg").toString());
+	public static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_SPIDER_HANGING_EGG = createKey("cave_spider_hanging_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_SPIDER_EGG = createKey("cave_spider_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> CREEPER_HANGING_EGG = createKey("creeper_hanging_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> CREEPER_EGG = createKey("creeper_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ENDERMAN_HANGING_EGG = createKey("enderman_hanging_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ENDERMAN_EGG = createKey("enderman_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SKELETON_HANGING_EGG = createKey("skeleton_hanging_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SKELETON_EGG = createKey("skeleton_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SPIDER_HANGING_EGG = createKey("spider_hanging_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SPIDER_EGG = createKey("spider_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ZOMBIE_HANGING_EGG = createKey("zombie_hanging_egg");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ZOMBIE_EGG = createKey("zombie_egg");
+
+	public static ResourceKey<ConfiguredFeature<?, ?>> createKey(String pName) {
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(MonsterEggs.MOD_ID, pName));
+	}
 
 	public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
 		FeatureUtils.register(context, CAVE_SPIDER_HANGING_EGG, Feature.RANDOM_PATCH, getConfiguredEgg(EggRegistry.CAVE_SPIDER_EGG.get(), Direction.UP, 24));
