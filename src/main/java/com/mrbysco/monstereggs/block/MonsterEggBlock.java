@@ -2,21 +2,18 @@ package com.mrbysco.monstereggs.block;
 
 import com.mrbysco.monstereggs.config.EggConfig;
 import com.mrbysco.monstereggs.registry.EggRegistry;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -36,7 +33,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
@@ -115,7 +111,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
 		super.fallOn(level, state, pos, entity, fallDistance);
 		if (fallDistance > 1 && level.random.nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
@@ -130,7 +126,8 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+		super.entityInside(state, level, pos, entity, effectApplier);
 		if (!(entity instanceof Player) && level.random.nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
 		}
@@ -162,17 +159,5 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(true) : super.getFluidState(state);
-	}
-
-	/**
-	 * Insert debug tooltip
-	 */
-
-	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
-		super.appendHoverText(stack, context, components, tooltipFlag);
-		if (EggConfig.COMMON.debugInfo.get()) {
-			components.add(Component.translatable(this.getType().getDescriptionId()).withStyle(ChatFormatting.RED));
-		}
 	}
 }

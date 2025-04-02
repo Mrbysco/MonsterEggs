@@ -8,6 +8,7 @@ import com.mrbysco.monstereggs.registry.EggRegistry;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
@@ -190,18 +191,12 @@ public class MonsterDatagen {
 		}
 
 		private void makeEgg(DeferredBlock<MonsterEggBlock> deferredBlock, BlockModelGenerators blockModels) {
-			ResourceLocation eggModel = EGG_MODEL.create(deferredBlock.get(), blockModels.modelOutput);
-			ResourceLocation hangingEggModel = HANGING_EGG_MODEL.create(deferredBlock.get(), blockModels.modelOutput);
+			MultiVariant eggVariant = BlockModelGenerators.plainVariant(EGG_MODEL.create(deferredBlock.get(), blockModels.modelOutput));
+			MultiVariant hangingEggVariant = BlockModelGenerators.plainVariant(HANGING_EGG_MODEL.create(deferredBlock.get(), blockModels.modelOutput));
 			blockModels.registerSimpleItemModel(deferredBlock.get(), deferredBlock.getId().withPrefix("block/"));
 			blockModels.blockStateOutput
-					.accept(
-							MultiVariantGenerator.multiVariant(deferredBlock.get())
-									.with(
-											BlockModelGenerators.createBooleanModelDispatch(BlockStateProperties.HANGING,
-													hangingEggModel, eggModel
-											)
-									)
-					);
+					.accept(MultiVariantGenerator.dispatch(deferredBlock.get())
+							.with(BlockModelGenerators.createBooleanModelDispatch(BlockStateProperties.HANGING, hangingEggVariant, eggVariant)));
 		}
 
 		public static TextureMapping egg(Block block) {
