@@ -1,9 +1,10 @@
 {
 	"credit": "Made by Mrbysco with Blockbench",
+	"parent": "block/block",
 	"textures": {
+		"bottom": "monstereggs:block/creeper_egg_bottom",
 		"side": "monstereggs:block/creeper_egg",
 		"top": "monstereggs:block/creeper_egg_top",
-		"bottom": "monstereggs:block/creeper_egg_bottom",
 		"particle": "monstereggs:block/creeper_egg"
 	},
 	"elements": [

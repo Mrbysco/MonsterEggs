@@ -6,8 +6,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +20,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -82,15 +85,16 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor levelAccessor, BlockPos currentPos, BlockPos facingPos) {
-		if (!levelAccessor.getBlockState(currentPos.below()).isAir()) {
-			state.setValue(HANGING, false);
-		} else {
-			if (!levelAccessor.getBlockState(currentPos.above()).isAir()) {
-				state.setValue(HANGING, true);
-			}
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess,
+	                                 BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState,
+	                                 RandomSource random) {
+		if (!level.getBlockState(pos.below()).isAir()) {
+			state = state.setValue(HANGING, false);
+		} else if (!level.getBlockState(pos.above()).isAir()) {
+			state = state.setValue(HANGING, true);
 		}
-		return !state.canSurvive(levelAccessor, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, facingState, levelAccessor, currentPos, facingPos);
+		return !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState() :
+				super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
 	}
 
 	@Override
@@ -139,12 +143,12 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	private void destroyEgg(Level level, BlockState state, BlockPos pos, Entity entity) {
-		if (!level.isClientSide) {
+		if (level instanceof ServerLevel serverLevel) {
 			level.playSound(null, pos, EggRegistry.MONSTER_EGG_BROKEN.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.destroyBlock(pos, false, entity);
 
 			EntityType<?> eggType = this.getType();
-			Entity eggEntity = eggType.create(level);
+			Entity eggEntity = eggType.create(serverLevel, EntitySpawnReason.DISPENSER);
 			if (eggEntity != null) {
 				eggEntity.setPosRaw(pos.getX() + 0.5D, pos.getY() + EggConfig.COMMON.spawnOffset.get(), pos.getZ() + 0.5D);
 				level.addFreshEntity(eggEntity);

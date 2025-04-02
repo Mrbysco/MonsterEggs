@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "monstereggs:block/creeper_egg"
+  }
+}

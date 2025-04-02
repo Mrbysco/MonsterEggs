@@ -5,6 +5,15 @@ import com.mrbysco.monstereggs.block.MonsterEggBlock;
 import com.mrbysco.monstereggs.registry.EggConfiguredFeatures;
 import com.mrbysco.monstereggs.registry.EggPlacedFeatures;
 import com.mrbysco.monstereggs.registry.EggRegistry;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.core.Cloner;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -28,12 +37,7 @@ import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -48,25 +52,20 @@ import java.util.function.Supplier;
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class MonsterDatagen {
 	@SubscribeEvent
-	public static void gatherData(GatherDataEvent event) {
+	public static void gatherData(GatherDataEvent.Client event) {
 		DataGenerator generator = event.getGenerator();
 		PackOutput packOutput = generator.getPackOutput();
-		ExistingFileHelper helper = event.getExistingFileHelper();
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-		if (event.includeServer()) {
-			generator.addProvider(event.includeServer(), new Loots(packOutput, lookupProvider));
+		generator.addProvider(true, new Loots(packOutput, lookupProvider));
 
-			generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(
-					packOutput, CompletableFuture.supplyAsync(MonsterDatagen::getProvider), Set.of(MonsterEggs.MOD_ID)));
-		}
-		if (event.includeClient()) {
-			generator.addProvider(event.includeClient(), new Language(packOutput));
-			generator.addProvider(event.includeClient(), new MonsterSoundProvider(packOutput, helper));
-			generator.addProvider(event.includeClient(), new BlockModels(packOutput, helper));
-			generator.addProvider(event.includeClient(), new ItemModels(packOutput, helper));
-			generator.addProvider(event.includeClient(), new BlockStates(packOutput, helper));
-		}
+		generator.addProvider(true, new DatapackBuiltinEntriesProvider(
+				packOutput, CompletableFuture.supplyAsync(MonsterDatagen::getProvider), Set.of(MonsterEggs.MOD_ID)));
+
+		generator.addProvider(true, new Language(packOutput));
+		generator.addProvider(true, new MonsterSoundProvider(packOutput));
+
+		generator.addProvider(true, new MonsterModels(packOutput));
 	}
 
 	private static RegistrySetBuilder.PatchedRegistries getProvider() {
@@ -142,14 +141,14 @@ public class MonsterDatagen {
 		}
 
 		public void addSubtitle(SoundEvent sound, String name) {
-			String path = MonsterEggs.MOD_ID + ".subtitle." + sound.getLocation().getPath();
+			String path = MonsterEggs.MOD_ID + ".subtitle." + sound.location().getPath();
 			this.add(path, name);
 		}
 	}
 
 	public static class MonsterSoundProvider extends SoundDefinitionsProvider {
-		public MonsterSoundProvider(PackOutput packOutput, ExistingFileHelper helper) {
-			super(packOutput, MonsterEggs.MOD_ID, helper);
+		public MonsterSoundProvider(PackOutput packOutput) {
+			super(packOutput, MonsterEggs.MOD_ID);
 		}
 
 		@Override
@@ -168,79 +167,49 @@ public class MonsterDatagen {
 		}
 	}
 
-	private static class BlockStates extends BlockStateProvider {
-		public BlockStates(PackOutput packOutput, ExistingFileHelper helper) {
-			super(packOutput, MonsterEggs.MOD_ID, helper);
+	private static class MonsterModels extends ModelProvider {
+		public static final ModelTemplate EGG = ModelTemplates.create("monstereggs:monster_egg", TextureSlot.PARTICLE, TextureSlot.SIDE, TextureSlot.BOTTOM, TextureSlot.TOP);
+		public static final ModelTemplate HANGING_EGG = ModelTemplates.create("monstereggs:monster_egg_hanging", "_hanging", TextureSlot.PARTICLE, TextureSlot.SIDE, TextureSlot.BOTTOM, TextureSlot.TOP);
+
+		public static final TexturedModel.Provider EGG_MODEL = TexturedModel.createDefault(MonsterModels::egg, EGG);
+		public static final TexturedModel.Provider HANGING_EGG_MODEL = TexturedModel.createDefault(MonsterModels::egg, HANGING_EGG);
+
+		public MonsterModels(PackOutput output) {
+			super(output, MonsterEggs.MOD_ID);
 		}
 
 		@Override
-		protected void registerStatesAndModels() {
-			makeEgg(EggRegistry.CAVE_SPIDER_EGG);
-			makeEgg(EggRegistry.CREEPER_EGG);
-			makeEgg(EggRegistry.ENDERMAN_EGG);
-			makeEgg(EggRegistry.SKELETON_EGG);
-			makeEgg(EggRegistry.SPIDER_EGG);
-			makeEgg(EggRegistry.ZOMBIE_EGG);
+		protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+			makeEgg(EggRegistry.CAVE_SPIDER_EGG, blockModels);
+			makeEgg(EggRegistry.CREEPER_EGG, blockModels);
+			makeEgg(EggRegistry.ENDERMAN_EGG, blockModels);
+			makeEgg(EggRegistry.SKELETON_EGG, blockModels);
+			makeEgg(EggRegistry.SPIDER_EGG, blockModels);
+			makeEgg(EggRegistry.ZOMBIE_EGG, blockModels);
+
 		}
 
-		private void makeEgg(DeferredBlock<MonsterEggBlock> block) {
-			ResourceLocation location = block.getId();
-			ModelFile model = models().getExistingFile(modLoc("block/" + location.getPath()));
-			ModelFile model2 = models().getExistingFile(modLoc("block/" + location.getPath() + "_hanging"));
-			getVariantBuilder(block.get())
-					.partialState().with(BlockStateProperties.HANGING, false)
-					.modelForState().modelFile(model).addModel()
-					.partialState().with(BlockStateProperties.HANGING, true)
-					.modelForState().modelFile(model2).addModel();
-		}
-	}
-
-	private static class BlockModels extends BlockModelProvider {
-		public BlockModels(PackOutput packOutput, ExistingFileHelper helper) {
-			super(packOutput, MonsterEggs.MOD_ID, helper);
+		private void makeEgg(DeferredBlock<MonsterEggBlock> deferredBlock, BlockModelGenerators blockModels) {
+			ResourceLocation eggModel = EGG_MODEL.create(deferredBlock.get(), blockModels.modelOutput);
+			ResourceLocation hangingEggModel = HANGING_EGG_MODEL.create(deferredBlock.get(), blockModels.modelOutput);
+			blockModels.registerSimpleItemModel(deferredBlock.get(), deferredBlock.getId().withPrefix("block/"));
+			blockModels.blockStateOutput
+					.accept(
+							MultiVariantGenerator.multiVariant(deferredBlock.get())
+									.with(
+											BlockModelGenerators.createBooleanModelDispatch(BlockStateProperties.HANGING,
+													hangingEggModel, eggModel
+											)
+									)
+					);
 		}
 
-		@Override
-		protected void registerModels() {
-			makeEgg(EggRegistry.CAVE_SPIDER_EGG.getId());
-			makeEgg(EggRegistry.CREEPER_EGG.getId());
-			makeEgg(EggRegistry.ENDERMAN_EGG.getId());
-			makeEgg(EggRegistry.SKELETON_EGG.getId());
-			makeEgg(EggRegistry.SPIDER_EGG.getId());
-			makeEgg(EggRegistry.ZOMBIE_EGG.getId());
-		}
-
-		private void makeEgg(ResourceLocation location) {
-			withExistingParent(location.getPath(), modLoc("block/monster_egg"))
-					.texture("particle", "block/" + location.getPath())
-					.texture("side", "block/" + location.getPath())
-					.texture("top", "block/" + location.getPath() + "_top")
-					.texture("bottom", "block/" + location.getPath() + "_bottom");
-			withExistingParent(location.getPath() + "_hanging", modLoc("block/monster_egg_hanging"))
-					.texture("particle", "block/" + location.getPath())
-					.texture("side", "block/" + location.getPath())
-					.texture("top", "block/" + location.getPath() + "_top")
-					.texture("bottom", "block/" + location.getPath() + "_bottom");
-		}
-	}
-
-	private static class ItemModels extends ItemModelProvider {
-		public ItemModels(PackOutput packOutput, ExistingFileHelper helper) {
-			super(packOutput, MonsterEggs.MOD_ID, helper);
-		}
-
-		@Override
-		protected void registerModels() {
-			makeEgg(EggRegistry.CAVE_SPIDER_EGG.getId());
-			makeEgg(EggRegistry.CREEPER_EGG.getId());
-			makeEgg(EggRegistry.ENDERMAN_EGG.getId());
-			makeEgg(EggRegistry.SKELETON_EGG.getId());
-			makeEgg(EggRegistry.SPIDER_EGG.getId());
-			makeEgg(EggRegistry.ZOMBIE_EGG.getId());
-		}
-
-		private void makeEgg(ResourceLocation location) {
-			withExistingParent(location.getPath(), modLoc("block/" + location.getPath()));
+		public static TextureMapping egg(Block block) {
+			return new TextureMapping()
+					.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block))
+					.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_bottom"))
+					.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
+					.put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(block));
 		}
 	}
 }

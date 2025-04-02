@@ -1,4 +1,16 @@
-// 1.21.1	2025-04-02T19:59:53.1755209	Block Models: monstereggs
+// 1.21.4	2025-04-02T20:41:04.5993854	Model Definitions - monstereggs
+d510b5ea18844402061b25a3035beb92af8dda9a assets/monstereggs/blockstates/cave_spider_egg.json
+a85ac1b3cbc7fc63c1df62c3e99bb0ba1b60522e assets/monstereggs/blockstates/creeper_egg.json
+8adc3760cefbcb496898e9a35cea8759d228da63 assets/monstereggs/blockstates/enderman_egg.json
+26a981736cb787989bceb6c182b5841d8e3736d0 assets/monstereggs/blockstates/skeleton_egg.json
+4c8a9f47b4dfeedfed3c0a0150fa3b1a18a49d31 assets/monstereggs/blockstates/spider_egg.json
+c3387f7a55f2312de12748f2cb342e6fd19ddf39 assets/monstereggs/blockstates/zombie_egg.json
+3f0002d56b60e0eee1dc48cd30b1c252ef3d4f5d assets/monstereggs/items/cave_spider_egg.json
+74821ff2b289bd63d4d1b4ec6852f65b6cd80e47 assets/monstereggs/items/creeper_egg.json
+d8cda0fbaf8b40c13279bf2424d7fe32e849feed assets/monstereggs/items/enderman_egg.json
+2e83ee2af26e1c2c0a0325a73a950954dc951e51 assets/monstereggs/items/skeleton_egg.json
+56327a289bb74cc6a7cb47a5e3ae71e715e49f5e assets/monstereggs/items/spider_egg.json
+244c01ef0799a363430cddbd4b01adf702d62a9a assets/monstereggs/items/zombie_egg.json
 6f4c7b9c5293f646621977fab569953d0d4f3b65 assets/monstereggs/models/block/cave_spider_egg.json
 cfc43953bfa04af0e59a95335589f768bdea04fe assets/monstereggs/models/block/cave_spider_egg_hanging.json
 e341b3956e70e229bdcb31a2348b6169411ff985 assets/monstereggs/models/block/creeper_egg.json
