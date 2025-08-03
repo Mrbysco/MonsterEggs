@@ -6,5 +6,13 @@
   "block.monstereggs.spider_egg": "Mysterious Shell",
   "block.monstereggs.zombie_egg": "Mysterious Shell",
   "itemGroup.monstereggs": "Monster Eggs",
+  "monstereggs.configuration.debug": "Debug",
+  "monstereggs.configuration.debug.tooltip": "Debug settings",
+  "monstereggs.configuration.debugInfo": "Debug Info",
+  "monstereggs.configuration.debugInfo.tooltip": "Show the mob in the tooltip of the shell [Default: false]",
+  "monstereggs.configuration.general": "General",
+  "monstereggs.configuration.general.tooltip": "General settings",
+  "monstereggs.configuration.spawnOffset": "Spawn Offset",
+  "monstereggs.configuration.spawnOffset.tooltip": "Dictates the Y offset of the mob spawned from the egg [Default: 0.5]",
   "monstereggs.subtitle.monster_egg.broken": "Monster Egg Hatching"
 }
