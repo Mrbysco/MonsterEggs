@@ -15,16 +15,16 @@ public class EggConfig {
 
 		Common(ModConfigSpec.Builder builder) {
 			builder.comment("General settings")
-					.push("General");
+					.push("general");
 
 			spawnOffset = builder
-					.comment("dictates the Y offset of the mob spawned from the egg [Default: 0.5]")
+					.comment("Dictates the Y offset of the mob spawned from the egg [Default: 0.5]")
 					.defineInRange("spawnOffset", 0.5, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
 			builder.pop();
 
 			builder.comment("Debug settings")
-					.push("Debug");
+					.push("debug");
 
 			debugInfo = builder
 					.comment("Show the mob in the tooltip of the shell [Default: false]")
