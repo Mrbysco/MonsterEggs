@@ -14,8 +14,8 @@ import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
 import java.util.List;
 
 public record AddFeaturesBlacklistBiomeModifier(List<HolderSet<Biome>> biomes, List<HolderSet<Biome>> blacklistBiomes,
-												HolderSet<PlacedFeature> features,
-												Decoration step) implements BiomeModifier {
+                                                HolderSet<PlacedFeature> features,
+                                                Decoration step) implements BiomeModifier {
 	@Override
 	public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
 		if (phase == Phase.ADD && biomes.stream().anyMatch(biomeSet -> biomeSet.contains(biome)) &&

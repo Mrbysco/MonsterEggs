@@ -24,7 +24,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.flag.FeatureFlags;
@@ -172,12 +172,12 @@ public class MonsterDatagen {
 					.with(sound(modLoc("monster_egg_break"))));
 		}
 
-		public String modSubtitle(ResourceLocation id) {
+		public String modSubtitle(Identifier id) {
 			return MonsterEggs.MOD_ID + ".subtitle." + id.getPath();
 		}
 
-		public ResourceLocation modLoc(String name) {
-			return ResourceLocation.fromNamespaceAndPath(MonsterEggs.MOD_ID, name);
+		public Identifier modLoc(String name) {
+			return Identifier.fromNamespaceAndPath(MonsterEggs.MOD_ID, name);
 		}
 	}
 

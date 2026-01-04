@@ -6,8 +6,8 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -38,11 +38,11 @@ public class EggPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> SPIDER_EGG = createKey("spider_egg");
 	public static final ResourceKey<PlacedFeature> ZOMBIE_HANGING_EGG = createKey("zombie_hanging_egg");
 	public static final ResourceKey<PlacedFeature> ZOMBIE_EGG = createKey("zombie_egg");
-	
+
 	public static ResourceKey<PlacedFeature> createKey(String pName) {
-		return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(MonsterEggs.MOD_ID, pName));
+		return ResourceKey.create(Registries.PLACED_FEATURE, Identifier.fromNamespaceAndPath(MonsterEggs.MOD_ID, pName));
 	}
-	
+
 	public static void bootstrap(BootstrapContext<PlacedFeature> context) {
 		HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
 

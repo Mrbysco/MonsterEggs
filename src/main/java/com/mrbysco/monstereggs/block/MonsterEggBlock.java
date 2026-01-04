@@ -126,8 +126,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
-		super.entityInside(state, level, pos, entity, effectApplier);
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean intersects) {
 		if (!(entity instanceof Player) && level.random.nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
 		}

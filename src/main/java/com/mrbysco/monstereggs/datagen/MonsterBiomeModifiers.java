@@ -7,8 +7,8 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
@@ -70,13 +70,13 @@ public class MonsterBiomeModifiers {
 
 
 	private static void generateBiomeModifier(BootstrapContext<BiomeModifier> context,
-											  HolderGetter<Biome> biomeGetter,
-											  HolderGetter<PlacedFeature> placedGetter,
-											  ResourceKey<BiomeModifier> modifierKey,
-											  ResourceKey<PlacedFeature> placedKey,
-											  @NotNull List<TagKey<Biome>> tags,
-											  @Nullable List<TagKey<Biome>> blacklistTags,
-											  GenerationStep.Decoration decorationType) {
+	                                          HolderGetter<Biome> biomeGetter,
+	                                          HolderGetter<PlacedFeature> placedGetter,
+	                                          ResourceKey<BiomeModifier> modifierKey,
+	                                          ResourceKey<PlacedFeature> placedKey,
+	                                          @NotNull List<TagKey<Biome>> tags,
+	                                          @Nullable List<TagKey<Biome>> blacklistTags,
+	                                          GenerationStep.Decoration decorationType) {
 		final List<HolderSet<Biome>> tagHolders = tags.stream()
 				.map(biomeGetter::getOrThrow).collect(Collectors.toList());
 		final List<HolderSet<Biome>> blacklistTagHolders = (blacklistTags == null || blacklistTags.isEmpty()) ? List.of() : blacklistTags.stream()
@@ -90,6 +90,6 @@ public class MonsterBiomeModifiers {
 	}
 
 	private static ResourceKey<BiomeModifier> createKey(String path) {
-		return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation.fromNamespaceAndPath(MonsterEggs.MOD_ID, path));
+		return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Identifier.fromNamespaceAndPath(MonsterEggs.MOD_ID, path));
 	}
 }
