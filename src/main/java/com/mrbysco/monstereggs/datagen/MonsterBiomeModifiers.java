@@ -80,7 +80,7 @@ public class MonsterBiomeModifiers {
 		final List<HolderSet<Biome>> tagHolders = tags.stream()
 				.map(biomeGetter::getOrThrow).collect(Collectors.toList());
 		final List<HolderSet<Biome>> blacklistTagHolders = (blacklistTags == null || blacklistTags.isEmpty()) ? List.of() : blacklistTags.stream()
-				.map(biomeGetter::getOrThrow).collect(Collectors.toList());
+		                                                                                                                    .map(biomeGetter::getOrThrow).collect(Collectors.toList());
 		final BiomeModifier addFeature = new AddFeaturesBlacklistBiomeModifier(
 				tagHolders,
 				blacklistTagHolders,

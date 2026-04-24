@@ -113,21 +113,21 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	@Override
 	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
 		super.fallOn(level, state, pos, entity, fallDistance);
-		if (fallDistance > 1 && level.random.nextBoolean()) {
+		if (fallDistance > 1 && level.getRandom().nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
 		}
 	}
 
 	@Override
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-		if (!(entity instanceof Player) && level.random.nextBoolean()) {
+		if (!(entity instanceof Player) && level.getRandom().nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
 		}
 	}
 
 	@Override
 	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean intersects) {
-		if (!(entity instanceof Player) && level.random.nextBoolean()) {
+		if (!(entity instanceof Player) && level.getRandom().nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
 		}
 	}

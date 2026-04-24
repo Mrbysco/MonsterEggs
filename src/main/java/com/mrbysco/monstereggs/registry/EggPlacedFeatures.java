@@ -63,9 +63,15 @@ public class EggPlacedFeatures {
 	private static List<PlacementModifier> getEggModifiers(Direction direction, int rarity, int count) {
 		EnvironmentScanPlacement environmentScanPlacement = EnvironmentScanPlacement.scanningFor(direction, BlockPredicate.hasSturdyFace(direction.getOpposite()),
 				BlockPredicate.ONLY_IN_AIR_PREDICATE, 32);
-		return List.of(RarityFilter.onAverageOnceEvery(rarity),
-				CountPlacement.of(UniformInt.of(0, count)), InSquarePlacement.spread(), PlacementUtils.FULL_RANGE,
-				environmentScanPlacement, SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -13),
-				RandomOffsetPlacement.of(ConstantInt.of(-1), ConstantInt.of(-1)), BiomeFilter.biome());
+		return List.of(
+				RarityFilter.onAverageOnceEvery(rarity),
+				CountPlacement.of(UniformInt.of(0, count)),
+				InSquarePlacement.spread(),
+				PlacementUtils.FULL_RANGE,
+				environmentScanPlacement,
+				SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -13),
+				RandomOffsetPlacement.of(ConstantInt.of(-1), ConstantInt.of(-1)),
+				BiomeFilter.biome()
+		);
 	}
 }
