@@ -100,17 +100,11 @@ public class MonsterDatagen {
 			addSubtitle(EggRegistry.MONSTER_EGG_BROKEN, "Monster Egg Hatching");
 
 			addBlock(EggRegistry.CAVE_SPIDER_EGG, "Mysterious Shell");
-			addItem(EggRegistry.CAVE_SPIDER_EGG_ITEM, "Mysterious Shell");
 			addBlock(EggRegistry.CREEPER_EGG, "Mysterious Shell");
-			addItem(EggRegistry.CREEPER_EGG_ITEM, "Mysterious Shell");
 			addBlock(EggRegistry.ENDERMAN_EGG, "Mysterious Shell");
-			addItem(EggRegistry.ENDERMAN_EGG_ITEM, "Mysterious Shell");
 			addBlock(EggRegistry.SKELETON_EGG, "Mysterious Shell");
-			addItem(EggRegistry.SKELETON_EGG_ITEM, "Mysterious Shell");
 			addBlock(EggRegistry.SPIDER_EGG, "Mysterious Shell");
-			addItem(EggRegistry.SPIDER_EGG_ITEM, "Mysterious Shell");
 			addBlock(EggRegistry.ZOMBIE_EGG, "Mysterious Shell");
-			addItem(EggRegistry.ZOMBIE_EGG_ITEM, "Mysterious Shell");
 
 			addConfig("general", "General", "General settings");
 			addConfig("spawnOffset", "Spawn Offset", "Dictates the Y offset of the mob spawned from the egg [Default: 0.5]");

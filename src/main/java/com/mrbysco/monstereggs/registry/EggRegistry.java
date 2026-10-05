@@ -41,12 +41,12 @@ public class EggRegistry {
 	public static final DeferredBlock<MonsterEggBlock> SPIDER_EGG = BLOCKS.registerBlock("spider_egg", (properties) -> new MonsterEggBlock(() -> EntityTypes.SPIDER, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
 	public static final DeferredBlock<MonsterEggBlock> ZOMBIE_EGG = BLOCKS.registerBlock("zombie_egg", (properties) -> new MonsterEggBlock(() -> EntityTypes.ZOMBIE, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
 
-	public static final DeferredItem<BlockItem> CAVE_SPIDER_EGG_ITEM = ITEMS.registerItem("cave_spider_egg", (properties) -> new MonsterEggItem(CAVE_SPIDER_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<BlockItem> CREEPER_EGG_ITEM = ITEMS.registerItem("creeper_egg", (properties) -> new MonsterEggItem(CREEPER_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<BlockItem> ENDERMAN_EGG_ITEM = ITEMS.registerItem("enderman_egg", (properties) -> new MonsterEggItem(ENDERMAN_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<BlockItem> SKELETON_EGG_ITEM = ITEMS.registerItem("skeleton_egg", (properties) -> new MonsterEggItem(SKELETON_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<BlockItem> SPIDER_EGG_ITEM = ITEMS.registerItem("spider_egg", (properties) -> new MonsterEggItem(SPIDER_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<BlockItem> ZOMBIE_EGG_ITEM = ITEMS.registerItem("zombie_egg", (properties) -> new MonsterEggItem(ZOMBIE_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<BlockItem> CAVE_SPIDER_EGG_ITEM = ITEMS.registerItem("cave_spider_egg", (properties) -> new MonsterEggItem(CAVE_SPIDER_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON).useBlockDescriptionPrefix());
+	public static final DeferredItem<BlockItem> CREEPER_EGG_ITEM = ITEMS.registerItem("creeper_egg", (properties) -> new MonsterEggItem(CREEPER_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON).useBlockDescriptionPrefix());
+	public static final DeferredItem<BlockItem> ENDERMAN_EGG_ITEM = ITEMS.registerItem("enderman_egg", (properties) -> new MonsterEggItem(ENDERMAN_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON).useBlockDescriptionPrefix());
+	public static final DeferredItem<BlockItem> SKELETON_EGG_ITEM = ITEMS.registerItem("skeleton_egg", (properties) -> new MonsterEggItem(SKELETON_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON).useBlockDescriptionPrefix());
+	public static final DeferredItem<BlockItem> SPIDER_EGG_ITEM = ITEMS.registerItem("spider_egg", (properties) -> new MonsterEggItem(SPIDER_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON).useBlockDescriptionPrefix());
+	public static final DeferredItem<BlockItem> ZOMBIE_EGG_ITEM = ITEMS.registerItem("zombie_egg", (properties) -> new MonsterEggItem(ZOMBIE_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON).useBlockDescriptionPrefix());
 
 	public static final Supplier<CreativeModeTab> EGG_TAB = CREATIVE_MODE_TABS.register("tab", () -> CreativeModeTab.builder()
 			.icon(() -> new ItemStack(EggRegistry.CREEPER_EGG.get()))
