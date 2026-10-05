@@ -15,14 +15,12 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.flag.FeatureFlags;
@@ -31,76 +29,62 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 @EventBusSubscriber
 public class MonsterDatagen {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent.Client event) {
-		DataGenerator generator = event.getGenerator();
-		PackOutput packOutput = generator.getPackOutput();
-		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+		event.createProvider(Language::new);
+		event.createProvider(MonsterSoundProvider::new);
+		event.createProvider(MonsterModels::new);
 
-		generator.addProvider(true, new Loots(packOutput, lookupProvider));
-
-		generator.addProvider(true, new Datapack(
-				packOutput, lookupProvider, Set.of(MonsterEggs.MOD_ID)));
-
-		generator.addProvider(true, new Language(packOutput));
-		generator.addProvider(true, new MonsterSoundProvider(packOutput));
-
-		generator.addProvider(true, new MonsterModels(packOutput));
-	}
-
-	private static class Datapack extends DatapackBuiltinEntriesProvider {
-		public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-				.add(Registries.CONFIGURED_FEATURE, EggConfiguredFeatures::bootstrap)
+		RegistrySetBuilder worldBuilder = new RegistrySetBuilder()
+				.add(Registries.FEATURE, EggConfiguredFeatures::bootstrap)
 				.add(Registries.PLACED_FEATURE, EggPlacedFeatures::bootstrap)
 				.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, MonsterBiomeModifiers::bootstrap);
 
-		public Datapack(PackOutput output, CompletableFuture<Provider> registries, Set<String> modIds) {
-			super(output, registries, BUILDER, modIds);
-		}
+		event.createWorldRegistryObjects(worldBuilder, Set.of(MonsterEggs.MOD_ID));
+
+		RegistrySetBuilder reloadableBuilder = new RegistrySetBuilder()
+				.add(Registries.LOOT_TABLE, new LootTableProvider(
+						Set.of(),
+						List.of(new LootTableProvider.SubProviderEntry(MonsterBlockTables::new,
+								LootContextParamSets.BLOCK))));
+
+		event.createReloadableRegistryObjects(reloadableBuilder, Set.of(MonsterEggs.MOD_ID));
 	}
 
-	private static class Loots extends LootTableProvider {
-		public Loots(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-			super(packOutput, Set.of(),
-					List.of(new SubProviderEntry(MonsterBlockTables::new, LootContextParamSets.BLOCK))
-					, lookupProvider);
+	public static class MonsterBlockTables extends BlockLootSubProvider {
+		public MonsterBlockTables(LootTableSubProvider.Context context) {
+			super(Set.of(), FeatureFlags.REGISTRY.allFlags(), context);
 		}
 
-		public static class MonsterBlockTables extends BlockLootSubProvider {
+		@Override
+		protected void generate() {
+			this.add(EggRegistry.CAVE_SPIDER_EGG.get(), noDrop());
+			this.add(EggRegistry.CREEPER_EGG.get(), noDrop());
+			this.add(EggRegistry.ENDERMAN_EGG.get(), noDrop());
+			this.add(EggRegistry.SKELETON_EGG.get(), noDrop());
+			this.add(EggRegistry.SPIDER_EGG.get(), noDrop());
+			this.add(EggRegistry.ZOMBIE_EGG.get(), noDrop());
+		}
 
-			protected MonsterBlockTables(HolderLookup.Provider provider) {
-				super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
-			}
-
-			@Override
-			protected void generate() {
-				this.add(EggRegistry.CAVE_SPIDER_EGG.get(), noDrop());
-				this.add(EggRegistry.CREEPER_EGG.get(), noDrop());
-				this.add(EggRegistry.ENDERMAN_EGG.get(), noDrop());
-				this.add(EggRegistry.SKELETON_EGG.get(), noDrop());
-				this.add(EggRegistry.SPIDER_EGG.get(), noDrop());
-				this.add(EggRegistry.ZOMBIE_EGG.get(), noDrop());
-			}
-
-			@Override
-			protected Iterable<Block> getKnownBlocks() {
-				return (Iterable<Block>) EggRegistry.BLOCKS.getEntries().stream().map(holder -> (Block) holder.get())::iterator;
-			}
+		@Override
+		protected @NonNull Iterable<Block> getKnownBlocks() {
+			return EggRegistry.BLOCKS.getEntries()
+					.stream()
+					.map(holder -> (Block) holder.get())::iterator;
 		}
 	}
 
@@ -184,7 +168,7 @@ public class MonsterDatagen {
 		}
 
 		@Override
-		protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+		protected void registerModels(@NonNull BlockModelGenerators blockModels, @NonNull ItemModelGenerators itemModels) {
 			makeEgg(EggRegistry.CAVE_SPIDER_EGG, blockModels);
 			makeEgg(EggRegistry.CREEPER_EGG, blockModels);
 			makeEgg(EggRegistry.ENDERMAN_EGG, blockModels);

@@ -5,6 +5,7 @@ import com.mrbysco.monstereggs.registry.EggRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -32,6 +33,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.function.Supplier;
 
@@ -72,7 +74,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+	public boolean canSurvive(@NonNull BlockState state, LevelReader reader, BlockPos pos) {
 		BlockPos belowPos = pos.below();
 		BlockState belowState = reader.getBlockState(belowPos);
 		BlockPos abovePos = pos.above();
@@ -81,9 +83,9 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess,
-	                                 BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState,
-	                                 RandomSource random) {
+	protected @NonNull BlockState updateShape(@NonNull BlockState state, LevelReader level, @NonNull ScheduledTickAccess scheduledTickAccess,
+	                                          BlockPos pos, @NonNull Direction direction, @NonNull BlockPos neighborPos, @NonNull BlockState neighborState,
+	                                          @NonNull RandomSource random) {
 		if (!level.getBlockState(pos.below()).isAir()) {
 			state = state.setValue(HANGING, false);
 		} else if (!level.getBlockState(pos.above()).isAir()) {
@@ -98,7 +100,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 		blockStateBuilder.add(HANGING, WATERLOGGED);
 	}
 
-	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
+	public @NonNull VoxelShape getShape(BlockState state, @NonNull BlockGetter getter, @NonNull BlockPos pos, @NonNull CollisionContext collisionContext) {
 		if (state.getValue(HANGING)) {
 			return HANGING_SHAPE;
 		} else {
@@ -111,7 +113,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
+	public void fallOn(@NonNull Level level, @NonNull BlockState state, @NonNull BlockPos pos, @NonNull Entity entity, double fallDistance) {
 		super.fallOn(level, state, pos, entity, fallDistance);
 		if (fallDistance > 1 && level.getRandom().nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
@@ -119,21 +121,21 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+	public void stepOn(@NonNull Level level, @NonNull BlockPos pos, @NonNull BlockState state, @NonNull Entity entity) {
 		if (!(entity instanceof Player) && level.getRandom().nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
 		}
 	}
 
 	@Override
-	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean intersects) {
+	protected void entityInside(@NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull Entity entity, @NonNull InsideBlockEffectApplier applier, boolean intersects) {
 		if (!(entity instanceof Player) && level.getRandom().nextBoolean()) {
 			destroyEgg(level, state, pos, entity);
 		}
 	}
 
 	@Override
-	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
+	public void playerDestroy(@NonNull ServerLevel level, @NonNull ServerPlayer player, @NonNull BlockPos pos, @NonNull BlockState state, @Nullable BlockEntity blockEntity, @NonNull ItemStack stack) {
 		super.playerDestroy(level, player, pos, state, blockEntity, stack);
 		destroyEgg(level, state, pos, player);
 	}
@@ -156,7 +158,7 @@ public class MonsterEggBlock extends Block implements SimpleWaterloggedBlock {
 	 * Insert waterlogged bits
 	 */
 	@Override
-	public FluidState getFluidState(BlockState state) {
+	public @NonNull FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(true) : super.getFluidState(state);
 	}
 }

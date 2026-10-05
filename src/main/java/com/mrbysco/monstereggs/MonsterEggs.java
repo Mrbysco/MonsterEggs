@@ -19,7 +19,7 @@ public class MonsterEggs {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	public MonsterEggs(IEventBus eventBus, Dist dist, ModContainer container) {
-		container.registerConfig(ModConfig.Type.COMMON, EggConfig.commonSpec);
+		container.registerConfig(ModConfig.Type.LOCAL, EggConfig.commonSpec);
 		eventBus.register(EggConfig.class);
 
 		EggRegistry.BLOCKS.register(eventBus);

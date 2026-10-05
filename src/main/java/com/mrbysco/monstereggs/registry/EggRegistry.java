@@ -7,7 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -34,12 +34,12 @@ public class EggRegistry {
 
 	public static final DeferredHolder<SoundEvent, SoundEvent> MONSTER_EGG_BROKEN = SOUND_EVENTS.register("monster_egg.broken", () -> SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(MonsterEggs.MOD_ID, "monster_egg.broken")));
 
-	public static final DeferredBlock<MonsterEggBlock> CAVE_SPIDER_EGG = BLOCKS.registerBlock("cave_spider_egg", (properties) -> new MonsterEggBlock(() -> EntityType.CAVE_SPIDER, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
-	public static final DeferredBlock<MonsterEggBlock> CREEPER_EGG = BLOCKS.registerBlock("creeper_egg", (properties) -> new MonsterEggBlock(() -> EntityType.CREEPER, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
-	public static final DeferredBlock<MonsterEggBlock> ENDERMAN_EGG = BLOCKS.registerBlock("enderman_egg", (properties) -> new MonsterEggBlock(() -> EntityType.ENDERMAN, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
-	public static final DeferredBlock<MonsterEggBlock> SKELETON_EGG = BLOCKS.registerBlock("skeleton_egg", (properties) -> new MonsterEggBlock(() -> EntityType.SKELETON, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
-	public static final DeferredBlock<MonsterEggBlock> SPIDER_EGG = BLOCKS.registerBlock("spider_egg", (properties) -> new MonsterEggBlock(() -> EntityType.SPIDER, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
-	public static final DeferredBlock<MonsterEggBlock> ZOMBIE_EGG = BLOCKS.registerBlock("zombie_egg", (properties) -> new MonsterEggBlock(() -> EntityType.ZOMBIE, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
+	public static final DeferredBlock<MonsterEggBlock> CAVE_SPIDER_EGG = BLOCKS.registerBlock("cave_spider_egg", (properties) -> new MonsterEggBlock(() -> EntityTypes.CAVE_SPIDER, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
+	public static final DeferredBlock<MonsterEggBlock> CREEPER_EGG = BLOCKS.registerBlock("creeper_egg", (properties) -> new MonsterEggBlock(() -> EntityTypes.CREEPER, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
+	public static final DeferredBlock<MonsterEggBlock> ENDERMAN_EGG = BLOCKS.registerBlock("enderman_egg", (properties) -> new MonsterEggBlock(() -> EntityTypes.ENDERMAN, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
+	public static final DeferredBlock<MonsterEggBlock> SKELETON_EGG = BLOCKS.registerBlock("skeleton_egg", (properties) -> new MonsterEggBlock(() -> EntityTypes.SKELETON, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
+	public static final DeferredBlock<MonsterEggBlock> SPIDER_EGG = BLOCKS.registerBlock("spider_egg", (properties) -> new MonsterEggBlock(() -> EntityTypes.SPIDER, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
+	public static final DeferredBlock<MonsterEggBlock> ZOMBIE_EGG = BLOCKS.registerBlock("zombie_egg", (properties) -> new MonsterEggBlock(() -> EntityTypes.ZOMBIE, properties.mapColor(MapColor.COLOR_GREEN).strength(0.5F).sound(SoundType.GRASS).lightLevel((state) -> 4)), () -> Block.Properties.ofFullCopy(Blocks.TURTLE_EGG));
 
 	public static final DeferredItem<BlockItem> CAVE_SPIDER_EGG_ITEM = ITEMS.registerItem("cave_spider_egg", (properties) -> new MonsterEggItem(CAVE_SPIDER_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<BlockItem> CREEPER_EGG_ITEM = ITEMS.registerItem("creeper_egg", (properties) -> new MonsterEggItem(CREEPER_EGG.get(), properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));

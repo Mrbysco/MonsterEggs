@@ -8,6 +8,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
@@ -21,8 +22,8 @@ public class MonsterEggItem extends BlockItem {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
-	                            Consumer<Component> components, TooltipFlag tooltipFlag) {
+	public void appendHoverText(@NonNull ItemStack stack, @NonNull TooltipContext context, @NonNull TooltipDisplay display,
+	                            @NonNull Consumer<Component> components, @NonNull TooltipFlag tooltipFlag) {
 		if (EggConfig.COMMON.debugInfo.get()) {
 			components.accept(Component.translatable(this.eggBlock.getType().getDescriptionId()).withStyle(ChatFormatting.RED));
 		}
