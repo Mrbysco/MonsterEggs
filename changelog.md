@@ -1,1 +1,1 @@
-* Initial update to 26.1.2
+* Initial update to 26.3 (Thanks to [AzureDoom](https://github.com/Mrbysco/MonsterEggs/pull/2))
