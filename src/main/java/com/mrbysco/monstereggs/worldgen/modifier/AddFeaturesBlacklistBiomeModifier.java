@@ -4,12 +4,14 @@ import com.mojang.serialization.MapCodec;
 import com.mrbysco.monstereggs.registry.EggModifiers;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.neoforge.common.world.BiomeGenerationSettingsBuilder;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public record AddFeaturesBlacklistBiomeModifier(List<HolderSet<Biome>> biomes, L
                                                 HolderSet<PlacedFeature> features,
                                                 Decoration step) implements BiomeModifier {
 	@Override
-	public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+	public void modify(@NonNull RegistryAccess registries, @NonNull Holder<Biome> biome, @NonNull Phase phase, ModifiableBiomeInfo.BiomeInfo.@NonNull Builder builder) {
 		if (phase == Phase.ADD && biomes.stream().anyMatch(biomeSet -> biomeSet.contains(biome)) &&
 				blacklistBiomes.stream().noneMatch(biomeSet -> biomeSet.contains(biome))) {
 			BiomeGenerationSettingsBuilder generationSettings = builder.getGenerationSettings();
@@ -26,7 +28,7 @@ public record AddFeaturesBlacklistBiomeModifier(List<HolderSet<Biome>> biomes, L
 	}
 
 	@Override
-	public MapCodec<? extends BiomeModifier> codec() {
+	public @NonNull MapCodec<? extends BiomeModifier> codec() {
 		return EggModifiers.ADD_FEATURES_BLACKLIST_BIOME_MODIFIER_TYPE.get();
 	}
 }

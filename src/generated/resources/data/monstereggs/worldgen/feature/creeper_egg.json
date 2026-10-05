@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:simple_block",
+  "to_place": {
+    "id": "monstereggs:creeper_egg",
+    "properties": {
+      "hanging": "false",
+      "waterlogged": "false"
+    }
+  }
+}

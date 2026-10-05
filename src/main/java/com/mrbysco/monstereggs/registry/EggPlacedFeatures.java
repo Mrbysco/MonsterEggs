@@ -12,14 +12,14 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.EnvironmentScanPlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.OffsetPlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.RandomOffsetPlacement;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.minecraft.world.level.levelgen.placement.SurfaceRelativeThresholdFilter;
 
@@ -44,7 +44,7 @@ public class EggPlacedFeatures {
 	}
 
 	public static void bootstrap(BootstrapContext<PlacedFeature> context) {
-		HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
+		HolderGetter<Feature> holdergetter = context.lookup(Registries.FEATURE);
 
 		PlacementUtils.register(context, CAVE_SPIDER_HANGING_EGG, holdergetter.getOrThrow(EggConfiguredFeatures.CAVE_SPIDER_HANGING_EGG), getEggModifiers(Direction.UP, 1, 4));
 		PlacementUtils.register(context, CAVE_SPIDER_EGG, holdergetter.getOrThrow(EggConfiguredFeatures.CAVE_SPIDER_EGG), getEggModifiers(Direction.DOWN, 1, 4));
@@ -70,7 +70,7 @@ public class EggPlacedFeatures {
 				PlacementUtils.FULL_RANGE,
 				environmentScanPlacement,
 				SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -13),
-				RandomOffsetPlacement.of(ConstantInt.of(-1), ConstantInt.of(-1)),
+				OffsetPlacement.of(ConstantInt.of(-1), ConstantInt.of(-1)),
 				BiomeFilter.biome()
 		);
 	}
